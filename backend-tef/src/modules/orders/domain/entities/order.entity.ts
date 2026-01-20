@@ -9,10 +9,10 @@ export class OrderEntity {
   public readonly uuid: string;
   public user: UserEntity | AdminEntity | ConsumidorFinalEntity;
   public date: string;
-  public file: string;
+  public file: string; // Ruta del archivo asociado -> futuro debería ser uuid archivo en bbdd cloud
   public count: number;
   public hoja: HojaEntity;
   public enganche: ProductEntity;
   public subtotal: number;
-  public total: numbercd;
+  public total: number;
 }

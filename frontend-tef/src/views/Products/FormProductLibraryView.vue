@@ -62,13 +62,6 @@ const onSubmit = async (e) => {
     <label for="description">Descripción:</label>
     <input type="text" id="description" name="description" v-model="product.description"/>
 
-    <label for="category">Categoría:</label>
-    <select id="category" name="category" v-model="product.category">
-      <option value="papeleria">Papelería</option>
-      <option value="libreria">Librería</option>
-      <option value="enganche">Enganche</option>
-    </select>
-
     <button type="submit">{{ uuid ? 'Editar' : 'Agregar' }}</button>
 
   </form>
