@@ -1,6 +1,5 @@
-export declare class HojaEntity {
-    readonly id: number;
-    readonly uuid: string;
-    name: string;
-    price: number;
+import { ProductEntity } from 'src/modules/products/domain/entities/product.entity';
+declare const EngancheEntity_base: import("@nestjs/mapped-types").MappedType<Partial<ProductEntity>>;
+export declare class EngancheEntity extends EngancheEntity_base {
 }
+export {};

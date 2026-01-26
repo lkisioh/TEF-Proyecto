@@ -4,15 +4,17 @@ export class CreateOrderDto {
   @IsString()
   uuidUser: string;
   @IsString()
-  date: string;
+  createdAt: string;
   @IsString()
-  file: string;
+  documentUuid: string;
   @IsNumber()
   count: number;
   @IsString()
-  hoja: string;
+  hojaUuid: string;
   @IsString()
-  enganche: string;
+  engancheUuid: string;
+  @IsString()
+  description: string;
   @IsNumber()
   subtotal: number;
   @IsNumber()

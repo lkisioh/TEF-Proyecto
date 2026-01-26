@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductOrmEntity = void 0;
+const order_orm_entity_1 = require("../../../orders/infra/databases/order.orm-entity");
 const typeorm_1 = require("typeorm");
 let ProductOrmEntity = class ProductOrmEntity {
     id;
@@ -17,6 +18,7 @@ let ProductOrmEntity = class ProductOrmEntity {
     name;
     price;
     description;
+    orders;
 };
 exports.ProductOrmEntity = ProductOrmEntity;
 __decorate([
@@ -39,6 +41,10 @@ __decorate([
     (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], ProductOrmEntity.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => order_orm_entity_1.OrderOrmEntity, (o) => o.enganche),
+    __metadata("design:type", Array)
+], ProductOrmEntity.prototype, "orders", void 0);
 exports.ProductOrmEntity = ProductOrmEntity = __decorate([
     (0, typeorm_1.Entity)({ name: 'products' })
 ], ProductOrmEntity);

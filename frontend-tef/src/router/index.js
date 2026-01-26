@@ -48,9 +48,14 @@ const router = createRouter({
       component: () => import('../views/Orders/OrdersView.vue'),
     },
      {
+      path: '/pedidos/nuevo',
+      name: 'pedidosNuevo',
+      component: () => import('../views/Orders/FormOrderView.vue'),
+    },
+     {
       path: '/archivos',
       name: 'archivos',
-      component: () => import('../views/Files/FilesView.vue'),
+      component: () => import('../views/Documents/DocumentsView.vue'),
     },
      {
       path: '/soporte',

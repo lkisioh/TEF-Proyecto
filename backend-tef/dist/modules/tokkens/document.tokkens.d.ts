@@ -1,0 +1,1 @@
+export declare const DOCUMENT_REPOSITORY = "DOCUMENT_REPOSITORY";

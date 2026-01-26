@@ -1,6 +1,4 @@
-export class HojaEntity {
-  public readonly id: number;
-  public readonly uuid: string;
-  public name: string;
-  public price: number;
-}
+import { PartialType } from '@nestjs/mapped-types';
+import { ProductEntity } from 'src/modules/products/domain/entities/product.entity';
+
+export class EngancheEntity extends PartialType(ProductEntity) {}

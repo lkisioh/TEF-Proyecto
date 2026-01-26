@@ -13,6 +13,11 @@ const user_orm_entity_1 = require("./modules/users/infra/databases/user.orm-enti
 const users_module_1 = require("./modules/users/users.module");
 const product_orm_entity_1 = require("./modules/products/infra/databases/product.orm-entity");
 const products_module_1 = require("./modules/products/products.module");
+const document_orm_entity_1 = require("./modules/documents/infra/databases/document.orm-entity");
+const documents_module_1 = require("./modules/documents/documents.module");
+const order_orm_entity_1 = require("./modules/orders/infra/databases/order.orm-entity");
+const orders_module_1 = require("./modules/orders/infra/orders.module");
+const hoja_orm_entity_1 = require("./modules/orders/infra/databases/hoja.orm-entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,11 +27,19 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'sqlite',
                 database: 'db.sqlite',
-                entities: [user_orm_entity_1.UserOrmEntity, product_orm_entity_1.ProductOrmEntity],
+                entities: [
+                    user_orm_entity_1.UserOrmEntity,
+                    product_orm_entity_1.ProductOrmEntity,
+                    document_orm_entity_1.DocumentOrmEntity,
+                    hoja_orm_entity_1.HojaOrmEntity,
+                    order_orm_entity_1.OrderOrmEntity,
+                ],
                 synchronize: true,
             }),
             users_module_1.UsersModule,
             products_module_1.ProductsModule,
+            documents_module_1.DocumentsModule,
+            orders_module_1.OrdersModule,
         ],
     })
 ], AppModule);

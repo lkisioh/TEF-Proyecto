@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { OrderOrmEntity } from "src/modules/orders/infra/databases/order.orm-entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity({ name: 'products' })
 export class ProductOrmEntity {
@@ -16,4 +17,7 @@ export class ProductOrmEntity {
 
   @Column({ default: null })
   description: string;
+
+  @OneToMany(() => OrderOrmEntity, (o) => o.enganche)
+  orders: OrderOrmEntity[];
 }

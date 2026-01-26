@@ -4,12 +4,13 @@ exports.OrderEntity = void 0;
 class OrderEntity {
     id;
     uuid;
+    createdAt;
     user;
-    date;
-    file;
+    document;
     count;
     hoja;
     enganche;
+    description;
     subtotal;
     total;
 }

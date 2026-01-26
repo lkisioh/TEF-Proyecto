@@ -13,11 +13,12 @@ exports.CreateOrderDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateOrderDto {
     uuidUser;
-    date;
-    file;
+    createdAt;
+    documentUuid;
     count;
-    hoja;
-    enganche;
+    hojaUuid;
+    engancheUuid;
+    description;
     subtotal;
     total;
 }
@@ -29,11 +30,11 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateOrderDto.prototype, "date", void 0);
+], CreateOrderDto.prototype, "createdAt", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateOrderDto.prototype, "file", void 0);
+], CreateOrderDto.prototype, "documentUuid", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
@@ -41,11 +42,15 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateOrderDto.prototype, "hoja", void 0);
+], CreateOrderDto.prototype, "hojaUuid", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateOrderDto.prototype, "enganche", void 0);
+], CreateOrderDto.prototype, "engancheUuid", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "description", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)

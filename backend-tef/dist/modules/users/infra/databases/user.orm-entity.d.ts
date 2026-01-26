@@ -1,3 +1,4 @@
+import { OrderOrmEntity } from "src/modules/orders/infra/databases/order.orm-entity";
 export declare class UserOrmEntity {
     id: number;
     uuid: string;
@@ -5,6 +6,7 @@ export declare class UserOrmEntity {
     surname: string;
     email: string;
     password: string;
+    orders: OrderOrmEntity[];
     phone: string;
     role: string;
 }

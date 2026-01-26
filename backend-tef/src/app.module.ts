@@ -7,16 +7,30 @@ import { UsersModule } from './modules/users/users.module';
 import { ProductOrmEntity } from './modules/products/infra/databases/product.orm-entity';
 import { ProductsModule } from './modules/products/products.module';
 
+import { DocumentOrmEntity } from './modules/documents/infra/databases/document.orm-entity';
+import { DocumentsModule } from './modules/documents/documents.module';
+
+import { OrderOrmEntity } from './modules/orders/infra/databases/order.orm-entity';
+import { OrdersModule } from './modules/orders/infra/orders.module';
+import { HojaOrmEntity } from './modules/orders/infra/databases/hoja.orm-entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [UserOrmEntity, ProductOrmEntity], // o autoLoadEntities: true
+      entities: [
+        UserOrmEntity,
+        ProductOrmEntity,
+        DocumentOrmEntity,
+        HojaOrmEntity,
+        OrderOrmEntity,
+      ], // o autoLoadEntities: true
       synchronize: true,
     }),
     UsersModule,
     ProductsModule,
+    DocumentsModule,
+    OrdersModule,
   ],
 })
 export class AppModule {}
