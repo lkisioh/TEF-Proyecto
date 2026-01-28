@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from 'typeorm';
-import { OrderOrmEntity } from 'src/modules/orders/infra/databases/order.orm-entity';
+import { OrderDetailOrmEntity } from 'src/modules/orders/infra/databases/order-details.orm-entity';
 
 @Entity('documents')
 export class DocumentOrmEntity {
@@ -28,6 +28,6 @@ export class DocumentOrmEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => OrderOrmEntity, (o) => o.document)
-  orders: OrderOrmEntity[];
+  @OneToMany(() => OrderDetailOrmEntity, (od) => od.document)
+  orderDetails: OrderDetailOrmEntity[];
 }

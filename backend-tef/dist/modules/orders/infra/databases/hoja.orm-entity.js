@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HojaOrmEntity = void 0;
-const order_orm_entity_1 = require("./order.orm-entity");
+const order_details_orm_entity_1 = require("./order-details.orm-entity");
 const typeorm_1 = require("typeorm");
 let HojaOrmEntity = class HojaOrmEntity {
     id;
@@ -21,7 +21,7 @@ let HojaOrmEntity = class HojaOrmEntity {
     precioColorSimple;
     precioColorDobleFaz;
     description;
-    orders;
+    orderDetails;
 };
 exports.HojaOrmEntity = HojaOrmEntity;
 __decorate([
@@ -57,9 +57,9 @@ __decorate([
     __metadata("design:type", String)
 ], HojaOrmEntity.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => order_orm_entity_1.OrderOrmEntity, (h) => h.hoja),
+    (0, typeorm_1.OneToMany)(() => order_details_orm_entity_1.OrderDetailOrmEntity, (h) => h.hoja),
     __metadata("design:type", Array)
-], HojaOrmEntity.prototype, "orders", void 0);
+], HojaOrmEntity.prototype, "orderDetails", void 0);
 exports.HojaOrmEntity = HojaOrmEntity = __decorate([
     (0, typeorm_1.Entity)({ name: 'hojas' })
 ], HojaOrmEntity);

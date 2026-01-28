@@ -1,12 +1,17 @@
-import type { IOrderRepository } from '../../domain/repositories/order.repository.interface';
-import { UpdateOrderDto } from '../dto/update-order.dto';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { OrderEntity } from '../../domain/entities/order.entity';
+import type { IProductRepository } from 'src/modules/products/domain/repositories/product.repository.interface';
+import type { IOrderRepository } from '../../domain/repositories/order.repository.interface';
+import type { IUserRepository } from 'src/modules/users/domain/repositories/user.repository.interface';
+import type { IDocumentRepository } from 'src/modules/documents/domain/repositories/document.repository.interface';
 export declare class OrdersService {
     private readonly orderRepository;
-    constructor(orderRepository: IOrderRepository);
-    findAll(): Promise<import("../../domain/entities/order.entity").OrderEntity[]>;
-    findOne(uuid: string): Promise<import("../../domain/entities/order.entity").OrderEntity>;
-    create(createOrderDto: CreateOrderDto): Promise<import("../../domain/entities/order.entity").OrderEntity>;
-    update(uuid: string, updateOrderDto: UpdateOrderDto): Promise<string | import("../../domain/entities/order.entity").OrderEntity>;
+    private readonly productRepository;
+    private readonly userRepository;
+    private readonly documentRepository;
+    constructor(orderRepository: IOrderRepository, productRepository: IProductRepository, userRepository: IUserRepository, documentRepository: IDocumentRepository);
+    findAll(): Promise<OrderEntity[]>;
+    findOne(uuid: string): Promise<OrderEntity>;
+    create(dto: CreateOrderDto): Promise<OrderEntity>;
     remove(uuid: string): Promise<void>;
 }

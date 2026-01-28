@@ -1,6 +1,7 @@
 <script setup>
 import { traerProducts } from '@/composables/Products/traerProducts'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
 let filter = ref('')
 const {products,llamarProductosAPI} = traerProducts()
 
@@ -11,13 +12,15 @@ function filtrar(campo) {
  alert(`Filtrando por: ${campo}`)
 }
 
+const enganches = computed(() => products.value.filter(p => p.category === 'Enganche'))
+
 </script>
 <template>
 
-  <h1>PRODUCTOS DE LIBRERÍA</h1>
+  <h1>ENGANCHES</h1>
 
    <nav>
-    <RouterLink to="/productos/librería/agregar">Añadir</RouterLink>
+    <RouterLink to="/productos/libreria/agregar">Añadir</RouterLink>
   </nav>
   <p for="filter">Filtrar productos</p>
 
@@ -29,11 +32,11 @@ function filtrar(campo) {
   <button @click="filtrar(filter)">Filtrar</button>
 
   <div class="contenedor">
-    <div class="producto" v-for="producto in products" :key="producto.uuid">
-      <p><strong>UUID:</strong> {{ producto.uuid }}</p>
-      <p><strong>Producto:</strong> {{ producto.name }}</p>
-      <p><strong>Precio:</strong> $ {{ producto.price }}</p>
-      <p><strong>Descripcion:</strong> {{ producto.description }}</p>
+    <div class="producto" v-for="e in enganches" :key="e.uuid">
+      <p><strong>UUID:</strong> {{ e.uuid }}</p>
+      <p><strong>Producto:</strong> {{ e.name }}</p>
+      <p><strong>Precio:</strong> $ {{ e.price }}</p>
+      <p><strong>Descripcion:</strong> {{ e.description }}</p>
   </div>
 
   </div>

@@ -9,17 +9,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const order_orm_entity_1 = require("./databases/order.orm-entity");
-const orders_services_1 = require("../application/services/orders.services");
-const order_repository_impl_1 = require("./repositories/order.repository.impl");
-const orders_controller_1 = require("./controllers/orders.controller");
-const order_tokens_1 = require("../../tokkens/order.tokens");
+const order_orm_entity_1 = require("./infra/databases/order.orm-entity");
+const orders_services_1 = require("./application/services/orders.services");
+const order_repository_impl_1 = require("./infra/repositories/order.repository.impl");
+const orders_controller_1 = require("./infra/controllers/orders.controller");
+const order_tokens_1 = require("../tokkens/order.tokens");
+const order_details_orm_entity_1 = require("./infra/databases/order-details.orm-entity");
+const products_module_1 = require("../products/products.module");
+const users_module_1 = require("../users/users.module");
+const documents_module_1 = require("../documents/documents.module");
 let OrdersModule = class OrdersModule {
 };
 exports.OrdersModule = OrdersModule;
 exports.OrdersModule = OrdersModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([order_orm_entity_1.OrderOrmEntity])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([order_orm_entity_1.OrderOrmEntity, order_details_orm_entity_1.OrderDetailOrmEntity]),
+            products_module_1.ProductsModule,
+            users_module_1.UsersModule,
+            documents_module_1.DocumentsModule,
+        ],
         controllers: [orders_controller_1.OrdersController],
         providers: [
             orders_services_1.OrdersService,

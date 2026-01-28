@@ -5,12 +5,10 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { DocumentOrmEntity } from 'src/modules/documents/infra/databases/document.orm-entity';
 import { UserOrmEntity } from 'src/modules/users/infra/databases/user.orm-entity';
-import { HojaOrmEntity } from './hoja.orm-entity';
-import { ProductOrmEntity } from 'src/modules/products/infra/databases/product.orm-entity';
-
+import { OrderDetailOrmEntity } from './order-details.orm-entity';
 @Entity('orders')
 export class OrderOrmEntity {
   @PrimaryGeneratedColumn()
@@ -22,43 +20,28 @@ export class OrderOrmEntity {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column({ nullable: true })
+  userUuid: string | null;
+
   @ManyToOne(() => UserOrmEntity, (u) => u.orders, {
     nullable: true,
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ name: 'userUuid' })
+  @JoinColumn({ name: 'userUuid', referencedColumnName: 'uuid' })
   user: UserOrmEntity | null;
 
-  @ManyToOne(() => DocumentOrmEntity, (d) => d.orders, {
-    nullable: true,
-    onDelete: 'SET NULL',
-  })
-  @JoinColumn({ name: 'documentUuid' })
-  document: DocumentOrmEntity | null;
-
   @Column()
-  count: number;
+  estado: string;
 
-  @ManyToOne(() => HojaOrmEntity, (h) => h.orders, {
-    nullable: true,
-    onDelete: 'SET NULL',
+  @OneToMany(() => OrderDetailOrmEntity, (d) => d.order, {
+    cascade: true, // crea/actualiza detalles junto con el pedido
+    eager: true, // opcional: trae details automáticamente
   })
-  @JoinColumn({ name: 'hojaUuid' })
-  hoja: HojaOrmEntity | null;
+  details: OrderDetailOrmEntity[];
 
-  @ManyToOne(() => ProductOrmEntity, (p) => p.orders, {
-    nullable: true,
-    onDelete: 'SET NULL',
-  })
-  @JoinColumn({ name: 'productUuid' })
-  enganche: ProductOrmEntity | null;
+  @Column({ default: '' })
+  notes: string;
 
-  @Column({ default: null })
-  description: string;
-
-  @Column()
-  subtotal: number;
-
-  @Column()
+  @Column({ type: 'real', default: 0 })
   total: number;
 }

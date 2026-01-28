@@ -1,11 +1,11 @@
 export declare class CreateOrderDto {
-    uuidUser: string;
-    createdAt: string;
-    documentUuid: string;
-    count: number;
-    hojaUuid: string;
-    engancheUuid: string;
-    description: string;
-    subtotal: number;
-    total: number;
+    userUuid?: string;
+    notes?: string;
+    details: Array<{
+        documentUuid: string;
+        hojaUuid: string;
+        productUuid?: string;
+        count: number;
+        description?: string;
+    }>;
 }

@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductOrmEntity = void 0;
-const order_orm_entity_1 = require("../../../orders/infra/databases/order.orm-entity");
+const order_details_orm_entity_1 = require("../../../orders/infra/databases/order-details.orm-entity");
 const typeorm_1 = require("typeorm");
 let ProductOrmEntity = class ProductOrmEntity {
     id;
@@ -18,7 +18,8 @@ let ProductOrmEntity = class ProductOrmEntity {
     name;
     price;
     description;
-    orders;
+    category;
+    orderDetails;
 };
 exports.ProductOrmEntity = ProductOrmEntity;
 __decorate([
@@ -42,9 +43,13 @@ __decorate([
     __metadata("design:type", String)
 ], ProductOrmEntity.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => order_orm_entity_1.OrderOrmEntity, (o) => o.enganche),
+    (0, typeorm_1.Column)({ default: 'libreria' }),
+    __metadata("design:type", String)
+], ProductOrmEntity.prototype, "category", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => order_details_orm_entity_1.OrderDetailOrmEntity, (h) => h.enganche),
     __metadata("design:type", Array)
-], ProductOrmEntity.prototype, "orders", void 0);
+], ProductOrmEntity.prototype, "orderDetails", void 0);
 exports.ProductOrmEntity = ProductOrmEntity = __decorate([
     (0, typeorm_1.Entity)({ name: 'products' })
 ], ProductOrmEntity);

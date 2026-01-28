@@ -1,9 +1,10 @@
-import { OrderOrmEntity } from "src/modules/orders/infra/databases/order.orm-entity";
+import { OrderDetailOrmEntity } from "src/modules/orders/infra/databases/order-details.orm-entity";
 export declare class ProductOrmEntity {
     id: number;
     uuid: string;
     name: string;
     price: number;
     description: string;
-    orders: OrderOrmEntity[];
+    category: string;
+    orderDetails: OrderDetailOrmEntity[];
 }

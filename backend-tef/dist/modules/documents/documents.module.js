@@ -29,7 +29,7 @@ exports.DocumentsModule = DocumentsModule = __decorate([
                 useClass: document_repository_impl_1.DocumentRepositoryImpl,
             },
         ],
-        exports: [documents_service_1.DocumentsService],
+        exports: [documents_service_1.DocumentsService, document_tokkens_1.DOCUMENT_REPOSITORY],
     })
 ], DocumentsModule);
 //# sourceMappingURL=documents.module.js.map

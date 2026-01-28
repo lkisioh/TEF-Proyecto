@@ -30,6 +30,7 @@ let ProductRepositoryImpl = class ProductRepositoryImpl {
             name: dto.name,
             price: dto.price,
             description: dto.description,
+            category: dto.category,
         });
         const saved = await this.productRepo.save(product);
         const domainProduct = new product_entity_1.ProductEntity();
@@ -39,6 +40,7 @@ let ProductRepositoryImpl = class ProductRepositoryImpl {
             name: saved.name,
             price: saved.price,
             description: saved.description,
+            category: saved.category,
         });
         return domainProduct;
     }
@@ -51,6 +53,7 @@ let ProductRepositoryImpl = class ProductRepositoryImpl {
                 name: entity.name,
                 price: entity.price,
                 description: entity.description,
+                category: entity.category,
             });
             return products;
         });

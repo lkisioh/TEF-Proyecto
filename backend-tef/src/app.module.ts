@@ -11,7 +11,8 @@ import { DocumentOrmEntity } from './modules/documents/infra/databases/document.
 import { DocumentsModule } from './modules/documents/documents.module';
 
 import { OrderOrmEntity } from './modules/orders/infra/databases/order.orm-entity';
-import { OrdersModule } from './modules/orders/infra/orders.module';
+import { OrderDetailOrmEntity } from './modules/orders/infra/databases/order-details.orm-entity';
+import { OrdersModule } from './modules/orders/orders.module';
 import { HojaOrmEntity } from './modules/orders/infra/databases/hoja.orm-entity';
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HojaOrmEntity } from './modules/orders/infra/databases/hoja.orm-entity'
         DocumentOrmEntity,
         HojaOrmEntity,
         OrderOrmEntity,
+        OrderDetailOrmEntity,
       ], // o autoLoadEntities: true
       synchronize: true,
     }),

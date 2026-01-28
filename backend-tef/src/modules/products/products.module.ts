@@ -17,6 +17,6 @@ import { PRODUCT_REPOSITORY } from './../tokkens/product.tokens';
       useClass: ProductRepositoryImpl,
     },
   ],
-  exports: [ProductsService],
+  exports: [ProductsService, PRODUCT_REPOSITORY],
 })
 export class ProductsModule {}

@@ -1,17 +1,13 @@
-import { DocumentOrmEntity } from 'src/modules/documents/infra/databases/document.orm-entity';
 import { UserOrmEntity } from 'src/modules/users/infra/databases/user.orm-entity';
-import { HojaOrmEntity } from './hoja.orm-entity';
-import { ProductOrmEntity } from 'src/modules/products/infra/databases/product.orm-entity';
+import { OrderDetailOrmEntity } from './order-details.orm-entity';
 export declare class OrderOrmEntity {
     id: number;
     uuid: string;
     createdAt: Date;
+    userUuid: string | null;
     user: UserOrmEntity | null;
-    document: DocumentOrmEntity | null;
-    count: number;
-    hoja: HojaOrmEntity | null;
-    enganche: ProductOrmEntity | null;
-    description: string;
-    subtotal: number;
+    estado: string;
+    details: OrderDetailOrmEntity[];
+    notes: string;
     total: number;
 }

@@ -6,4 +6,6 @@ export class CreateProductDto {
   price: number;
   @IsString()
   description: string;
+  @IsString()
+  category: string;
 }

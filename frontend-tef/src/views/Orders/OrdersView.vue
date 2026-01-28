@@ -1,8 +1,20 @@
+<script setup>
+import { traerOrders } from '@/composables/Orders/traerOrders'
+import { RouterLink } from 'vue-router'
+
+const {orders,llamarOrdenesAPI} = traerOrders()
+
+llamarOrdenesAPI('http://localhost:3000/orders/')
+
+</script>
 <template>
   <h1>Pedidos</h1>
 
   <div class="contenedor">
 
+    <nav>
+    <RouterLink to="/pedidos/nuevo">Nuevo Pedido</RouterLink>
+  </nav>
     Aquí va la lista de pedidos
     <div class="pedido" v-for="order in orders" :key="order.uuid">
       <p><strong>UUID:</strong> {{ order.uuid }}</p>
@@ -17,14 +29,7 @@
 
   </div>
 </template>
-<script setup>
-import { traerOrders } from '@/composables/Orders/traerOrders'
-
-const {orders,llamarOrdenesAPI} = traerOrders()
-
-llamarOrdenesAPI('http://localhost:3000/orders/')
-
-</script>
+>
 <style scoped>
 .contenedor {
   display: flex;

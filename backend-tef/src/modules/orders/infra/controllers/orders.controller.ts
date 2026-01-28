@@ -32,7 +32,7 @@ export class OrdersController {
 
   @Patch(':uuid')
   update(@Param('uuid') uuid: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.productsService.update(uuid, updateOrderDto);
+    return 'Not implemented' + uuid + JSON.stringify(updateOrderDto);
   }
 
   @Delete(':uuid')

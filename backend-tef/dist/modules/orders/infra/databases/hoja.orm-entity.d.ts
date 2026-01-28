@@ -1,4 +1,4 @@
-import { OrderOrmEntity } from "./order.orm-entity";
+import { OrderDetailOrmEntity } from "./order-details.orm-entity";
 export declare class HojaOrmEntity {
     id: number;
     uuid: string;
@@ -8,5 +8,5 @@ export declare class HojaOrmEntity {
     precioColorSimple: number;
     precioColorDobleFaz: number;
     description: string;
-    orders: OrderOrmEntity[];
+    orderDetails: OrderDetailOrmEntity[];
 }

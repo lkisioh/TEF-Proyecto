@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
   <h1>PRODUCTOS</h1>
 
   <nav>
-    <RouterLink to="/productos/librería">LIBRERÍA</RouterLink>
+    <RouterLink to="/productos/libreria">LIBRERÍA</RouterLink>
   </nav>
 
   <nav>
@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
   </nav>
 
   <nav>
-    <RouterLink to="/productos/enganches">ENGANCHES</RouterLink>
+    <RouterLink to="/productos/enganche">ENGANCHES</RouterLink>
   </nav>
 
 </template>

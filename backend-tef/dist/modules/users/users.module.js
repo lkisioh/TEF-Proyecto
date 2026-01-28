@@ -29,7 +29,7 @@ exports.UsersModule = UsersModule = __decorate([
                 useClass: user_repository_impl_1.UserRepositoryImpl,
             },
         ],
-        exports: [users_service_1.UsersService],
+        exports: [users_service_1.UsersService, user_tokens_1.USER_REPOSITORY],
     })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map

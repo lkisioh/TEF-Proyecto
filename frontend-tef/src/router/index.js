@@ -28,19 +28,24 @@ const router = createRouter({
       component: () => import('../views/Products/ProductsView.vue'),
     },
      {
-      path: '/productos/librería',
-      name: 'productosLibreríaAñadir',
-      component: () => import('../views/Products/ProductLibraryView.vue'),
+      path: '/productos/libreria',
+      name: 'productosLibreria',
+      component: () => import('../views/Products/Product - Enganche/ProductLibraryView.vue'),
     },
      {
-      path: '/productos/librería/editar/:uuid',
+      path: '/productos/libreria/editar/:uuid',
       name: 'productosEditar',
-      component: () => import('../views/Products/FormProductLibraryView.vue'),
+      component: () => import('../views/Products/Product - Enganche/FormProductView.vue'),
     },
      {
-      path: '/productos/librería/agregar',
+      path: '/productos/libreria/agregar',
       name: 'productosLibreríaAgregar',
-      component: () => import('../views/Products/FormProductLibraryView.vue'),
+      component: () => import('../views/Products/Product - Enganche/FormProductView.vue'),
+    },
+     {
+      path: '/productos/enganche',
+      name: 'productosEnganche',
+      component: () => import('../views/Products/Product - Enganche/EngancheView.vue'),
     },
      {
       path: '/pedidos',

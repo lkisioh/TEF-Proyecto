@@ -1,130 +1,108 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import { DataSource, Repository } from 'typeorm';
 
 import { OrderOrmEntity } from '../databases/order.orm-entity';
-import { IOrderRepository } from '../../domain/repositories/order.repository.interface';
-
+import { OrderDetailOrmEntity } from '../databases/order-details.orm-entity';
+import { DeepPartial } from 'typeorm/common/DeepPartial';
 import { OrderEntity } from '../../domain/entities/order.entity';
-
-import { UpdateOrderDto } from '../../application/dto/update-order.dto';
-import { CreateOrderDto } from '../../application/dto/create-order.dto';
-import { UserOrmEntity } from 'src/modules/users/infra/databases/user.orm-entity';
-import { DocumentOrmEntity } from 'src/modules/documents/infra/databases/document.orm-entity';
-import { HojaOrmEntity } from '../databases/hoja.orm-entity';
-import { ProductOrmEntity } from 'src/modules/products/infra/databases/product.orm-entity';
+import { OrderDetailEntity } from '../../domain/entities/order-detail.entity';
+import type { IOrderRepository } from '../../domain/repositories/order.repository.interface';
 
 @Injectable()
 export class OrderRepositoryImpl implements IOrderRepository {
   constructor(
+    private readonly dataSource: DataSource,
     @InjectRepository(OrderOrmEntity)
     private readonly orderRepo: Repository<OrderOrmEntity>,
   ) {}
 
-  async createOrder(dto: CreateOrderDto): Promise<OrderEntity> {
-    const order = this.orderRepo.create({
-      uuid: uuidv4(),
-      user: dto.uuidUser ? ({ uuid: dto.uuidUser } as UserOrmEntity) : null,
-      document: dto.documentUuid
-        ? ({ uuid: dto.documentUuid } as DocumentOrmEntity)
-        : null,
-      count: dto.count,
-      hoja: dto.hojaUuid ? ({ uuid: dto.hojaUuid } as HojaOrmEntity) : null,
-      enganche: dto.engancheUuid
-        ? ({ uuid: dto.engancheUuid } as ProductOrmEntity)
-        : null,
-      description: dto.description,
-      subtotal: dto.subtotal,
-      total: dto.total,
+  async create(order: OrderEntity): Promise<OrderEntity> {
+    return this.dataSource.transaction(async (manager) => {
+      // 1) Crear OrderOrmEntity desde Domain (sin relaciones)
+      const orderData: DeepPartial<OrderOrmEntity> = {
+        uuid: order.uuid,
+        estado: order.estado,
+        notes: order.notes ?? '',
+        total: order.total,
+        userUuid: order.userUuid ?? undefined, // ✅ FK directa
+      };
+
+      const orderOrm = manager.create(OrderOrmEntity, orderData);
+      const savedOrder = await manager.save(OrderOrmEntity, orderOrm);
+
+      // 2) Crear details desde Domain (usando FKs directas)
+      const detailOrms = order.details.map((d) => {
+        const detailData: DeepPartial<OrderDetailOrmEntity> = {
+          uuid: d.uuid,
+
+          orderUuid: savedOrder.uuid,
+          documentUuid: d.documentUuid,
+          hojaUuid: d.hojaUuid,
+          engancheUuid: d.engancheUuid,
+
+          count: d.count,
+          description: d.description ?? '',
+          unitPrice: d.unitPrice,
+          subtotal: d.subtotal,
+        };
+
+        return manager.create(OrderDetailOrmEntity, detailData);
+      });
+
+      await manager.save(OrderDetailOrmEntity, detailOrms);
+
+      // 3) Devolver Domain mapeado
+      return this.toDomain(savedOrder, detailOrms);
     });
-
-    const saved = await this.orderRepo.save(order);
-
-    const domainOrder = new OrderEntity();
-    Object.assign(domainOrder, {
-      id: saved.id,
-      uuid: saved.uuid,
-      user: saved.user,
-      createdAt: saved.createdAt,
-      document: saved.document,
-      count: saved.count,
-      hoja: saved.hoja,
-      enganche: saved.enganche,
-      description: saved.description,
-      subtotal: saved.subtotal,
-      total: saved.total,
-    });
-
-    return domainOrder;
   }
 
   async findAll(): Promise<OrderEntity[]> {
-    const entities = await this.orderRepo.find();
-    return entities.map((entity) => {
-      const orders = new OrderEntity();
-      Object.assign(orders, {
-        uuid: entity.uuid,
-        user: entity.user,
-        createdAt: entity.createdAt,
-        document: entity.document,
-        count: entity.count,
-        hoja: entity.hoja,
-        enganche: entity.enganche,
-        description: entity.description,
-        subtotal: entity.subtotal,
-        total: entity.total,
-      });
-      return orders;
+    const rows = await this.orderRepo.find({
+      relations: { details: true, user: true }, // ajustá según necesidad
+      order: { createdAt: 'DESC' },
     });
+    return rows.map((o) => this.toDomain(o, o.details ?? []));
   }
 
   async findByUuid(uuid: string): Promise<OrderEntity | null> {
-    const entity = await this.orderRepo.findOne({ where: { uuid } });
-    if (!entity) return null;
-
-    const orderFind = new OrderEntity();
-    Object.assign(orderFind, {
-      uuid: entity.uuid,
-      user: entity.user,
-      createdAt: entity.createdAt,
-      document: entity.document,
-      count: entity.count,
-      hoja: entity.hoja,
-      enganche: entity.enganche,
-      description: entity.description,
-      subtotal: entity.subtotal,
-      total: entity.total,
+    const row = await this.orderRepo.findOne({
+      where: { uuid },
+      relations: { details: true, user: true },
     });
-
-    return orderFind;
-  }
-  async update(
-    dto: UpdateOrderDto,
-    uuid: string,
-  ): Promise<OrderEntity | string> {
-    await this.orderRepo.update({ uuid }, dto);
-    const updatedEntity = await this.orderRepo.findOne({ where: { uuid } });
-    if (!updatedEntity) {
-      return 'Product not found';
-    }
-    const updatedOrder = new OrderEntity();
-    Object.assign(updatedOrder, {
-      uuid: updatedEntity.uuid,
-      user: updatedEntity.user,
-      createdAt: updatedEntity.createdAt,
-      document: updatedEntity.document,
-      count: updatedEntity.count,
-      hoja: updatedEntity.hoja,
-      enganche: updatedEntity.enganche,
-      description: updatedEntity.description,
-      subtotal: updatedEntity.subtotal,
-      total: updatedEntity.total,
-    });
-    return updatedOrder;
+    if (!row) return null;
+    return this.toDomain(row, row.details ?? []);
   }
 
   async delete(uuid: string): Promise<void> {
-    await this.orderRepo.delete({ uuid });
+    await this.orderRepo.delete({ uuid } as any);
+  }
+
+  private toDomain(
+    orderOrm: OrderOrmEntity,
+    detailsOrm: OrderDetailOrmEntity[],
+  ): OrderEntity {
+    const o = new OrderEntity();
+    o.uuid = orderOrm.uuid;
+    o.createdAt = orderOrm.createdAt;
+    o.userUuid = orderOrm.userUuid ?? null;
+    o.estado = orderOrm.estado;
+    o.notes = orderOrm.notes;
+    o.total = orderOrm.total;
+
+    o.details = detailsOrm.map((d) => {
+      const dd = new OrderDetailEntity();
+      dd.uuid = d.uuid;
+      dd.documentUuid = d.document?.uuid;
+      dd.hojaUuid = d.hoja?.uuid;
+      dd.engancheUuid = d.enganche?.uuid;
+      dd.count = d.count;
+      dd.description = d.description;
+      dd.unitPrice = d.unitPrice;
+      dd.subtotal = d.subtotal;
+      return dd;
+    });
+
+    return o;
   }
 }

@@ -5,13 +5,10 @@ class OrderEntity {
     id;
     uuid;
     createdAt;
-    user;
-    document;
-    count;
-    hoja;
-    enganche;
-    description;
-    subtotal;
+    userUuid;
+    estado;
+    notes;
+    details;
     total;
 }
 exports.OrderEntity = OrderEntity;

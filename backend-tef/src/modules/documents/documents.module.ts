@@ -17,6 +17,6 @@ import { DOCUMENT_REPOSITORY } from './../tokkens/document.tokkens';
       useClass: DocumentRepositoryImpl,
     },
   ],
-  exports: [DocumentsService],
+  exports: [DocumentsService, DOCUMENT_REPOSITORY],
 })
 export class DocumentsModule {}

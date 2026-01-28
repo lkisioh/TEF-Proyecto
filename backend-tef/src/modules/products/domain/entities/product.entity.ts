@@ -4,5 +4,5 @@ export class ProductEntity {
   public name: string;
   public price: number;
   public description: string;
-  public category: string = 'librería';
+  public category: string;
 }

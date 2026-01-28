@@ -1,4 +1,4 @@
-import { OrderOrmEntity } from "./order.orm-entity";
+import { OrderDetailOrmEntity } from "./order-details.orm-entity";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity({ name: 'hojas' })
@@ -27,6 +27,6 @@ export class HojaOrmEntity {
   @Column({ default: null })
   description: string;
 
-  @OneToMany(() => OrderOrmEntity, (h) => h.hoja)
-  orders: OrderOrmEntity[];
+  @OneToMany(() => OrderDetailOrmEntity, (h) => h.hoja)
+  orderDetails: OrderDetailOrmEntity[];
 }

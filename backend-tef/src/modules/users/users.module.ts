@@ -17,6 +17,6 @@ import { USER_REPOSITORY } from '../tokkens/user.tokens';
       useClass: UserRepositoryImpl,
     },
   ],
-  exports: [UsersService],
+  exports: [UsersService, USER_REPOSITORY],
 })
 export class UsersModule {}

@@ -7,6 +7,6 @@ export declare class OrdersController {
     create(createOrderDto: CreateOrderDto): Promise<import("../../domain/entities/order.entity").OrderEntity>;
     findAll(): Promise<import("../../domain/entities/order.entity").OrderEntity[]>;
     findOne(uuid: string): Promise<import("../../domain/entities/order.entity").OrderEntity>;
-    update(uuid: string, updateOrderDto: UpdateOrderDto): Promise<string | import("../../domain/entities/order.entity").OrderEntity>;
+    update(uuid: string, updateOrderDto: UpdateOrderDto): string;
     remove(uuid: string): Promise<void>;
 }

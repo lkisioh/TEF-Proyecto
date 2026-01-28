@@ -1,4 +1,4 @@
-import { OrderOrmEntity } from 'src/modules/orders/infra/databases/order.orm-entity';
+import { OrderDetailOrmEntity } from 'src/modules/orders/infra/databases/order-details.orm-entity';
 export declare class DocumentOrmEntity {
     id: number;
     uuid: string;
@@ -6,5 +6,5 @@ export declare class DocumentOrmEntity {
     contentType: string;
     data: Buffer;
     createdAt: Date;
-    orders: OrderOrmEntity[];
+    orderDetails: OrderDetailOrmEntity[];
 }

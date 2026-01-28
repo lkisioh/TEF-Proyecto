@@ -7,7 +7,7 @@ class ProductEntity {
     name;
     price;
     description;
-    category = 'librería';
+    category;
 }
 exports.ProductEntity = ProductEntity;
 //# sourceMappingURL=product.entity.js.map

@@ -32,7 +32,7 @@ let OrdersController = class OrdersController {
         return this.productsService.findOne(uuid);
     }
     update(uuid, updateOrderDto) {
-        return this.productsService.update(uuid, updateOrderDto);
+        return 'Not implemented' + uuid + JSON.stringify(updateOrderDto);
     }
     remove(uuid) {
         return this.productsService.remove(uuid);

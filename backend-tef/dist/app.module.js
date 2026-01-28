@@ -16,7 +16,8 @@ const products_module_1 = require("./modules/products/products.module");
 const document_orm_entity_1 = require("./modules/documents/infra/databases/document.orm-entity");
 const documents_module_1 = require("./modules/documents/documents.module");
 const order_orm_entity_1 = require("./modules/orders/infra/databases/order.orm-entity");
-const orders_module_1 = require("./modules/orders/infra/orders.module");
+const order_details_orm_entity_1 = require("./modules/orders/infra/databases/order-details.orm-entity");
+const orders_module_1 = require("./modules/orders/orders.module");
 const hoja_orm_entity_1 = require("./modules/orders/infra/databases/hoja.orm-entity");
 let AppModule = class AppModule {
 };
@@ -33,6 +34,7 @@ exports.AppModule = AppModule = __decorate([
                     document_orm_entity_1.DocumentOrmEntity,
                     hoja_orm_entity_1.HojaOrmEntity,
                     order_orm_entity_1.OrderOrmEntity,
+                    order_details_orm_entity_1.OrderDetailOrmEntity,
                 ],
                 synchronize: true,
             }),

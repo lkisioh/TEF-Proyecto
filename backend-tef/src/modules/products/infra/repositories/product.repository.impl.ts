@@ -24,6 +24,7 @@ export class ProductRepositoryImpl implements IProductRepository {
       name: dto.name,
       price: dto.price,
       description: dto.description,
+      category: dto.category,
     });
 
     const saved = await this.productRepo.save(product);
@@ -35,6 +36,7 @@ export class ProductRepositoryImpl implements IProductRepository {
       name: saved.name,
       price: saved.price,
       description: saved.description,
+      category: saved.category,
     });
 
     return domainProduct;
@@ -49,6 +51,7 @@ export class ProductRepositoryImpl implements IProductRepository {
         name: entity.name,
         price: entity.price,
         description: entity.description,
+        category: entity.category,
       });
       return products;
     });

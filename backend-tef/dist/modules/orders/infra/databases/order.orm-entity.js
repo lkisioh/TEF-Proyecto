@@ -11,21 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderOrmEntity = void 0;
 const typeorm_1 = require("typeorm");
-const document_orm_entity_1 = require("../../../documents/infra/databases/document.orm-entity");
 const user_orm_entity_1 = require("../../../users/infra/databases/user.orm-entity");
-const hoja_orm_entity_1 = require("./hoja.orm-entity");
-const product_orm_entity_1 = require("../../../products/infra/databases/product.orm-entity");
+const order_details_orm_entity_1 = require("./order-details.orm-entity");
 let OrderOrmEntity = class OrderOrmEntity {
     id;
     uuid;
     createdAt;
+    userUuid;
     user;
-    document;
-    count;
-    hoja;
-    enganche;
-    description;
-    subtotal;
+    estado;
+    details;
+    notes;
     total;
 };
 exports.OrderOrmEntity = OrderOrmEntity;
@@ -42,51 +38,34 @@ __decorate([
     __metadata("design:type", Date)
 ], OrderOrmEntity.prototype, "createdAt", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Object)
+], OrderOrmEntity.prototype, "userUuid", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => user_orm_entity_1.UserOrmEntity, (u) => u.orders, {
         nullable: true,
         onDelete: 'SET NULL',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'userUuid' }),
+    (0, typeorm_1.JoinColumn)({ name: 'userUuid', referencedColumnName: 'uuid' }),
     __metadata("design:type", Object)
 ], OrderOrmEntity.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => document_orm_entity_1.DocumentOrmEntity, (d) => d.orders, {
-        nullable: true,
-        onDelete: 'SET NULL',
-    }),
-    (0, typeorm_1.JoinColumn)({ name: 'documentUuid' }),
-    __metadata("design:type", Object)
-], OrderOrmEntity.prototype, "document", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], OrderOrmEntity.prototype, "count", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => hoja_orm_entity_1.HojaOrmEntity, (h) => h.orders, {
-        nullable: true,
-        onDelete: 'SET NULL',
-    }),
-    (0, typeorm_1.JoinColumn)({ name: 'hojaUuid' }),
-    __metadata("design:type", Object)
-], OrderOrmEntity.prototype, "hoja", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => product_orm_entity_1.ProductOrmEntity, (p) => p.orders, {
-        nullable: true,
-        onDelete: 'SET NULL',
-    }),
-    (0, typeorm_1.JoinColumn)({ name: 'productUuid' }),
-    __metadata("design:type", Object)
-], OrderOrmEntity.prototype, "enganche", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
-], OrderOrmEntity.prototype, "description", void 0);
+], OrderOrmEntity.prototype, "estado", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], OrderOrmEntity.prototype, "subtotal", void 0);
+    (0, typeorm_1.OneToMany)(() => order_details_orm_entity_1.OrderDetailOrmEntity, (d) => d.order, {
+        cascade: true,
+        eager: true,
+    }),
+    __metadata("design:type", Array)
+], OrderOrmEntity.prototype, "details", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], OrderOrmEntity.prototype, "notes", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'real', default: 0 }),
     __metadata("design:type", Number)
 ], OrderOrmEntity.prototype, "total", void 0);
 exports.OrderOrmEntity = OrderOrmEntity = __decorate([

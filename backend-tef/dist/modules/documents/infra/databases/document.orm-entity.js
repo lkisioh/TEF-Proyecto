@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentOrmEntity = void 0;
 const typeorm_1 = require("typeorm");
-const order_orm_entity_1 = require("../../../orders/infra/databases/order.orm-entity");
+const order_details_orm_entity_1 = require("../../../orders/infra/databases/order-details.orm-entity");
 let DocumentOrmEntity = class DocumentOrmEntity {
     id;
     uuid;
@@ -19,7 +19,7 @@ let DocumentOrmEntity = class DocumentOrmEntity {
     contentType;
     data;
     createdAt;
-    orders;
+    orderDetails;
 };
 exports.DocumentOrmEntity = DocumentOrmEntity;
 __decorate([
@@ -47,9 +47,9 @@ __decorate([
     __metadata("design:type", Date)
 ], DocumentOrmEntity.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => order_orm_entity_1.OrderOrmEntity, (o) => o.document),
+    (0, typeorm_1.OneToMany)(() => order_details_orm_entity_1.OrderDetailOrmEntity, (od) => od.document),
     __metadata("design:type", Array)
-], DocumentOrmEntity.prototype, "orders", void 0);
+], DocumentOrmEntity.prototype, "orderDetails", void 0);
 exports.DocumentOrmEntity = DocumentOrmEntity = __decorate([
     (0, typeorm_1.Entity)('documents')
 ], DocumentOrmEntity);
