@@ -1,6 +1,5 @@
-export declare class HojaEntity {
-    readonly id: number;
-    uuid: string;
+export declare class CreateHojaDto {
+    uuid?: number;
     tamano: string;
     gramaje: number;
     precioBynSimple: number;

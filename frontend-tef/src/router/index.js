@@ -29,7 +29,7 @@ const router = createRouter({
     },
      {
       path: '/productos/libreria',
-      name: 'productosLibreria',
+      name: 'productosLibreriaList',
       component: () => import('../views/Products/Product - Enganche/ProductLibraryView.vue'),
     },
      {
@@ -39,13 +39,23 @@ const router = createRouter({
     },
      {
       path: '/productos/libreria/agregar',
-      name: 'productosLibreríaAgregar',
+      name: 'productosLibreríaForm',
       component: () => import('../views/Products/Product - Enganche/FormProductView.vue'),
     },
      {
-      path: '/productos/enganche',
-      name: 'productosEnganche',
+      path: '/productos/enganches',
+      name: 'EngancheList',
       component: () => import('../views/Products/Product - Enganche/EngancheView.vue'),
+    },
+     {
+      path: '/productos/hojas',
+      name: 'HojasList',
+      component: () => import('../views/Products/Hojas/ProductHojaView.vue'),
+    },
+     {
+      path: '/productos/hojas/nueva',
+      name: 'HojasFomr',
+      component: () => import('../views/Products/Hojas/FormHojaView.vue'),
     },
      {
       path: '/pedidos',

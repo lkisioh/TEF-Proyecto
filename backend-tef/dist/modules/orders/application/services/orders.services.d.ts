@@ -1,4 +1,4 @@
-import { CreateOrderDto } from '../dto/create-order.dto';
+import { CreateOrderDto } from '../dto/orders/create-order.dto';
 import { OrderEntity } from '../../domain/entities/order.entity';
 import type { IProductRepository } from 'src/modules/products/domain/repositories/product.repository.interface';
 import type { IOrderRepository } from '../../domain/repositories/order.repository.interface';

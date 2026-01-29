@@ -1,0 +1,1 @@
+export const HOJA_REPOSITORY = 'HOJA_REPOSITORY';

@@ -9,6 +9,9 @@ export class HojaOrmEntity {
   @Column({ unique: true })
   uuid: string;
 
+  @Column({ default: null })
+  tamano: string;
+
   @Column({ nullable: true })
   gramaje: number;
 
@@ -24,7 +27,7 @@ export class HojaOrmEntity {
   @Column()
   precioColorDobleFaz: number;
 
-  @Column({ default: null })
+  @Column({nullable : true})
   description: string;
 
   @OneToMany(() => OrderDetailOrmEntity, (h) => h.hoja)

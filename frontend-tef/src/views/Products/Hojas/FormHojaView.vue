@@ -1,12 +1,17 @@
 <script setup>
 import { reactive, ref } from 'vue'
-import { api } from '@/services/api'
 
-const error = ref('')
+import { crearHojas } from '@/composables/Hojas/crearHoja'
+
+const { createdHoja, error, crearHojaAPI }= crearHojas()
+
 const success = ref('')
 const loading = ref(false)
 
+let err = ref('')
+
 const form = reactive({
+  tamano: 'A4',
   gramaje: 80,
   precioBynSimple: 0,
   precioBynDobleFaz: 0,
@@ -16,8 +21,7 @@ const form = reactive({
 })
 
 const submit = async () => {
-  error.value = ''
-  success.value = ''
+  err.value = ''
 
   const nums = [
     form.precioBynSimple,
@@ -26,12 +30,13 @@ const submit = async () => {
     form.precioColorDobleFaz,
   ].map(Number)
 
-  if (nums.some((n) => Number.isNaN(n) || n < 0)) return (error.value = 'Precios inválidos')
+  if (nums.some((n) => Number.isNaN(n) || n < 0)) return (err.value = 'Precios inválidos')
   if (Number(form.gramaje) <= 0) return (error.value = 'Gramaje inválido')
 
   loading.value = true
   try {
-    const payload = {
+    const nuevaHoja = {
+      tamano: form.tamano?.trim() || null,
       gramaje: Number(form.gramaje),
       precioBynSimple: Number(form.precioBynSimple),
       precioBynDobleFaz: Number(form.precioBynDobleFaz),
@@ -40,10 +45,12 @@ const submit = async () => {
       description: form.description?.trim() || null,
     }
 
-    const { data } = await api.post('/hojas', payload)
+    const { data } = await crearHojaAPI('http://localhost:3000/hojas',nuevaHoja)
     success.value = `Hoja creada: ${data.uuid ?? 'OK'}`
+    alert(`Hoja creada con éxito: ${data.uuid ?? 'OK'}`)
 
     // reset
+    form.tamano = 'A4'
     form.gramaje = 80
     form.precioBynSimple = 0
     form.precioBynDobleFaz = 0
@@ -61,6 +68,17 @@ const submit = async () => {
 <template>
   <div style="max-width:700px;margin:0 auto;padding:16px;">
     <h1>Crear Hoja</h1>
+
+    <div>
+      <select v-model="form.tamano" >
+        <option value="">-- Seleccionar Hoja--</option>
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="A3">A3</option>
+        <option value="A4">A4</option>
+        <option value="A5">A5</option>
+      </select>
+    </div>
 
     <div>
       <label>Gramaje</label><br />
@@ -91,7 +109,7 @@ const submit = async () => {
 
     <div style="margin-top:12px;">
       <label>Descripción</label><br />
-      <input v-model="form.description" placeholder="Ej: A4 80g" />
+      <input v-model="form.description" placeholder="Ej: sticker - papel fotográfico" />
     </div>
 
     <div style="margin-top:16px;">

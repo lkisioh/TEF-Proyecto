@@ -15,6 +15,7 @@ const typeorm_1 = require("typeorm");
 let HojaOrmEntity = class HojaOrmEntity {
     id;
     uuid;
+    tamano;
     gramaje;
     precioBynSimple;
     precioBynDobleFaz;
@@ -32,6 +33,10 @@ __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], HojaOrmEntity.prototype, "uuid", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: null }),
+    __metadata("design:type", String)
+], HojaOrmEntity.prototype, "tamano", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
@@ -53,7 +58,7 @@ __decorate([
     __metadata("design:type", Number)
 ], HojaOrmEntity.prototype, "precioColorDobleFaz", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: null }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], HojaOrmEntity.prototype, "description", void 0);
 __decorate([

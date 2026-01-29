@@ -1,6 +1,6 @@
 import { OrdersService } from '../../application/services/orders.services';
-import { CreateOrderDto } from '../../application/dto/create-order.dto';
-import { UpdateOrderDto } from '../../application/dto/update-order.dto';
+import { CreateOrderDto } from '../../application/dto/orders/create-order.dto';
+import { UpdateOrderDto } from '../../application/dto/orders/update-order.dto';
 export declare class OrdersController {
     private readonly productsService;
     constructor(productsService: OrdersService);

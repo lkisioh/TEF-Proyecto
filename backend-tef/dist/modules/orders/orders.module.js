@@ -18,6 +18,7 @@ const order_details_orm_entity_1 = require("./infra/databases/order-details.orm-
 const products_module_1 = require("../products/products.module");
 const users_module_1 = require("../users/users.module");
 const documents_module_1 = require("../documents/documents.module");
+const hojas_module_1 = require("./hojas.module");
 let OrdersModule = class OrdersModule {
 };
 exports.OrdersModule = OrdersModule;
@@ -28,6 +29,7 @@ exports.OrdersModule = OrdersModule = __decorate([
             products_module_1.ProductsModule,
             users_module_1.UsersModule,
             documents_module_1.DocumentsModule,
+            hojas_module_1.HojasModule,
         ],
         controllers: [orders_controller_1.OrdersController],
         providers: [

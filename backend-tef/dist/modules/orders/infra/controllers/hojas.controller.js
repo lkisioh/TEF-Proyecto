@@ -12,70 +12,70 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrdersController = void 0;
+exports.HojasController = void 0;
 const common_1 = require("@nestjs/common");
-const orders_services_1 = require("../../application/services/orders.services");
-const create_order_dto_1 = require("../../application/dto/orders/create-order.dto");
-const update_order_dto_1 = require("../../application/dto/orders/update-order.dto");
-let OrdersController = class OrdersController {
-    productsService;
-    constructor(productsService) {
-        this.productsService = productsService;
+const hojas_services_1 = require("../../application/services/hojas.services");
+const create_hoja_dto_1 = require("../../application/dto/hojas/create-hoja.dto");
+const update_hoja_dto_1 = require("../../application/dto/hojas/update-hoja.dto");
+let HojasController = class HojasController {
+    hojasService;
+    constructor(hojasService) {
+        this.hojasService = hojasService;
     }
-    create(createOrderDto) {
-        return this.productsService.create(createOrderDto);
+    create(createHojaDto) {
+        return this.hojasService.create(createHojaDto);
     }
     findAll() {
-        return this.productsService.findAll();
+        return this.hojasService.findAll();
     }
     findOne(uuid) {
-        return this.productsService.findOne(uuid);
+        return this.hojasService.findOne(uuid);
     }
-    update(uuid, updateOrderDto) {
-        return 'Not implemented' + uuid + JSON.stringify(updateOrderDto);
+    update(uuid, updateHojaDto) {
+        return 'Not implemented' + uuid + JSON.stringify(updateHojaDto);
     }
     remove(uuid) {
-        return this.productsService.remove(uuid);
+        return this.hojasService.remove(uuid);
     }
 };
-exports.OrdersController = OrdersController;
+exports.HojasController = HojasController;
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_order_dto_1.CreateOrderDto]),
+    __metadata("design:paramtypes", [create_hoja_dto_1.CreateHojaDto]),
     __metadata("design:returntype", void 0)
-], OrdersController.prototype, "create", null);
+], HojasController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], OrdersController.prototype, "findAll", null);
+], HojasController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':uuid'),
     __param(0, (0, common_1.Param)('uuid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], OrdersController.prototype, "findOne", null);
+], HojasController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':uuid'),
     __param(0, (0, common_1.Param)('uuid')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_order_dto_1.UpdateOrderDto]),
+    __metadata("design:paramtypes", [String, update_hoja_dto_1.UpdateHojaDto]),
     __metadata("design:returntype", void 0)
-], OrdersController.prototype, "update", null);
+], HojasController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':uuid'),
     __param(0, (0, common_1.Param)('uuid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], OrdersController.prototype, "remove", null);
-exports.OrdersController = OrdersController = __decorate([
-    (0, common_1.Controller)('orders'),
-    __metadata("design:paramtypes", [orders_services_1.OrdersService])
-], OrdersController);
-//# sourceMappingURL=orders.controller.js.map
+], HojasController.prototype, "remove", null);
+exports.HojasController = HojasController = __decorate([
+    (0, common_1.Controller)('hojas'),
+    __metadata("design:paramtypes", [hojas_services_1.HojasService])
+], HojasController);
+//# sourceMappingURL=hojas.controller.js.map

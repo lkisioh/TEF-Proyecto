@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common';
-import { UpdateOrderDto } from '../dto/update-order.dto';
-import { CreateOrderDto } from '../dto/create-order.dto';
+import { UpdateOrderDto } from '../dto/orders/update-order.dto';
+import { CreateOrderDto } from '../dto/orders/create-order.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { OrderEntity } from '../../domain/entities/order.entity';
 import { BadRequestException } from '@nestjs/common';

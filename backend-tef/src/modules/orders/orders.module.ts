@@ -9,6 +9,7 @@ import { OrderDetailOrmEntity } from './infra/databases/order-details.orm-entity
 import { ProductsModule } from 'src/modules/products/products.module';
 import { UsersModule } from 'src/modules/users/users.module';
 import { DocumentsModule } from 'src/modules/documents/documents.module';
+import { HojasModule } from './hojas.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DocumentsModule } from 'src/modules/documents/documents.module';
     ProductsModule, // ✅ para PRODUCT_REPOSITORY
     UsersModule, // ✅ para USER_REPOSITORY
     DocumentsModule, // ✅ para DOCUMENT_REPOSITORY
+    HojasModule,
   ],
   controllers: [OrdersController],
   providers: [
