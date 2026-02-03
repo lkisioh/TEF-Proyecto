@@ -4,6 +4,7 @@ export declare class DocumentOrmEntity {
     uuid: string;
     fileName: string;
     contentType: string;
+    cantidadPaginas: number;
     data: Buffer;
     createdAt: Date;
     orderDetails: OrderDetailOrmEntity[];

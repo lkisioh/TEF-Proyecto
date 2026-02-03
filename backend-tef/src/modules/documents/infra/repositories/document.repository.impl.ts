@@ -23,6 +23,7 @@ export class DocumentRepositoryImpl implements IDocumentRepository {
       uuid: uuidv4(),
       fileName: dto.fileName,
       contentType: dto.contentType,
+      cantidadPaginas: dto.cantidadPaginas,
       data: dto.data,
     });
 
@@ -34,6 +35,7 @@ export class DocumentRepositoryImpl implements IDocumentRepository {
       uuid: saved.uuid,
       fileName: saved.fileName,
       contentType: saved.contentType,
+      cantidadPaginas: saved.cantidadPaginas,
       data: saved.data,
       createdAt: saved.createdAt,
     });
@@ -49,6 +51,7 @@ export class DocumentRepositoryImpl implements IDocumentRepository {
         uuid: entity.uuid,
         fileName: entity.fileName,
         contentType: entity.contentType,
+        cantidadPaginas: entity.cantidadPaginas,
         data: entity.data,
         createdAt: entity.createdAt,
       });
@@ -65,6 +68,7 @@ export class DocumentRepositoryImpl implements IDocumentRepository {
       uuid: entity.uuid,
       fileName: entity.fileName,
       contentType: entity.contentType,
+      cantidadPaginas: entity.cantidadPaginas,
       data: entity.data,
       createdAt: entity.createdAt,
     });

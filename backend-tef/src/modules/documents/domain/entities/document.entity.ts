@@ -4,6 +4,7 @@ export class DocumentEntity {
   public readonly uuid: string;
   public fileName: string;
   public contentType: string;
+  public cantidadPaginas: number;
   public data: Buffer;
   public createdAt: Date;
   public orders: OrderEntity[];

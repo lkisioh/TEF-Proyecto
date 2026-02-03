@@ -21,6 +21,9 @@ export class DocumentOrmEntity {
   @Column({ type: 'text', default: 'application/pdf' })
   contentType: string;
 
+  @Column({ type: 'integer' })
+  cantidadPaginas: number;
+
   // En SQLite se guarda como BLOB
   @Column({ type: 'blob' })
   data: Buffer;

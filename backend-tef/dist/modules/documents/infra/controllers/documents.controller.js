@@ -16,6 +16,7 @@ exports.DocumentsController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const documents_service_1 = require("../../application/services/documents.service");
+const pdf_lib_1 = require("pdf-lib");
 let DocumentsController = class DocumentsController {
     docs;
     constructor(docs) {
@@ -31,9 +32,12 @@ let DocumentsController = class DocumentsController {
         if (!file.buffer?.length) {
             throw new common_1.BadRequestException('No llegó el buffer (¿memoryStorage?)');
         }
+        const pdf = await pdf_lib_1.PDFDocument.load(file.buffer);
+        const contadorPaginas = pdf.getPageCount();
         const dto = {
             fileName: file.originalname,
             contentType: file.mimetype ?? 'application/pdf',
+            cantidadPaginas: contadorPaginas,
             data: file.buffer,
         };
         return this.docs.create(dto);

@@ -12,6 +12,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentsService } from '../../application/services/documents.service';
 import type { Response } from 'express';
 import { CreateDocumentDto } from '../../application/dto/create-document.dto';
+import { PDFDocument } from 'pdf-lib';
 
 @Controller('documents')
 export class DocumentsController {
@@ -34,9 +35,13 @@ export class DocumentsController {
       throw new BadRequestException('No llegó el buffer (¿memoryStorage?)');
     }
 
+    const pdf = await PDFDocument.load(file.buffer);
+    const contadorPaginas = pdf.getPageCount();
+
     const dto: CreateDocumentDto = {
       fileName: file.originalname,
       contentType: file.mimetype ?? 'application/pdf',
+      cantidadPaginas: contadorPaginas,
       data: file.buffer,
     };
 

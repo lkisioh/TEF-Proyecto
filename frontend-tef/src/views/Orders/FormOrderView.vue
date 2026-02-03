@@ -1,28 +1,98 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import axios from 'axios'
+
 
 // lógica docs
 import { traerDocuments } from '@/composables/Documents/traerDocuments'
 
 const { docs, llamarDocsAPI,} = traerDocuments()
 
-//lógica user
+// lógica user
 import { traerUsers } from '@/composables/Users/traerUsers'
 
-const {users,llamarUsuariosAPI} = traerUsers()
+const { users, llamarUsuariosAPI } = traerUsers()
 
 // lógica enganche
 
 import { traerProducts } from '@/composables/Products/traerProducts'
-const{ products, llamarProductosAPI} = traerProducts()
+const{ products, llamarProductosAPI } = traerProducts()
 
 const enganches = computed(() => products.value.filter(p => p.category === 'Enganche'))
 
+// lógica hojas
+
+import { traerHojas } from '@/composables/Products/Hojas/traerHojas'
+const {hojas, llamarHojasAPI } = traerHojas()
+
+
+// Mostrar SUBTOTALES al elegir e ir cambiando selects
+
+const getDoc = (uuid) => docs.value.find(x => x.uuid === uuid)
+const getHoja = (uuid) => hojas.value.find(x => x.uuid === uuid)
+const getEnganche = (uuid) => products.value.find(x => x.uuid === uuid)
+
+const getPagesDoc = (detail) => {
+  const doc = getDoc(detail.documentUuid)
+  return Number(doc?.cantidadPaginas ?? 0)
+}
+
+const getPages = (detail) => {
+  const doc = getDoc(detail.documentUuid)
+  const paginas = Number(doc?.cantidadPaginas ?? 0)
+
+  if (detail.printType === 'byn_doble' || detail.printType === 'col_doble') {
+    return Math.ceil(paginas / 2)
+  }
+
+  return paginas
+}
+
+const getPrintOptions = (detail) => {
+  const h = getHoja(detail.hojaUuid)
+  if (!h) return []
+  return [
+    { key: 'byn_simple', label: `B/N Simple - $${h.precioBynSimple}`, price: Number(h.precioBynSimple) },
+    { key: 'byn_doble',  label: `B/N Doble - $${h.precioBynDobleFaz}`, price: Number(h.precioBynDobleFaz) },
+    { key: 'col_simple', label: `Color Simple - $${h.precioColorSimple}`, price: Number(h.precioColorSimple) },
+    { key: 'col_doble',  label: `Color Doble - $${h.precioColorDobleFaz}`, price: Number(h.precioColorDobleFaz) },
+  ]
+}
+// cambia la hoja y resetea
+const onHojaChange = (d) => {
+  d.printType = ''
+  d.precioHoja = 0
+}
+
+// elige la impresión
+
+const onPrintChange = (d) => {
+  const opt = getPrintOptions(d).find(o => o.key === d.printType)
+  d.precioHoja = opt ? opt.price : 0
+}
+
+// precios
+
+const getPrecioEnganche = (d) => {
+  const p = getEnganche(d.productUuid)
+  return Number(p?.price ?? 0)
+}
+
+// regla típica: subtotal = paginas * cantidad * precioHoja + enganche
+const getSubtotal = (d) => {
+  const pages = getPages(d)
+  const hoja = Number(d.precioHoja ?? 0)
+  const enganche = getPrecioEnganche(d)
+  return (pages * hoja + enganche)
+}
+
 //cargar selects
-onMounted(async () => {
-  await llamarDocsAPI('http://localhost:3000/documents', llamarUsuariosAPI('http://localhost:3000/users/'), llamarProductosAPI('http://localhost:3000/products'))
-})
+onMounted(() => {
+
+    llamarDocsAPI('http://localhost:3000/documents'),
+    llamarUsuariosAPI('http://localhost:3000/users'),
+    llamarProductosAPI('http://localhost:3000/products'),
+    llamarHojasAPI('http://localhost:3000/hojas')})
+
 
 
 // estado UI
@@ -43,9 +113,13 @@ const form = reactive({
   details: [
     {
       documentUuid: '',
+      documentPageNumber: 1,
       hojaUuid: '',
+      printType: '',
+      precioHoja: 0,
       productUuid: '', // opcional
-      count: 1,
+      precioEnganche: 0,
+      cantidad: 1,
       description: '',
     },
   ],
@@ -55,9 +129,13 @@ const form = reactive({
 const addDetail = () => {
   form.details.push({
     documentUuid: '',
+    documentPageNumber: 1,
     hojaUuid: '',
+    printType: '',
+    precioHoja: 0,
     productUuid: '',
-    count: 1,
+    precioEnganche: 0,
+    cantidad: 1,
     description: '',
   })
 }
@@ -74,11 +152,13 @@ const validate = () => {
     const d = form.details[i]
     if (!d.documentUuid) return `Detalle ${i + 1}: falta documento.`
     if (!d.hojaUuid) return `Detalle ${i + 1}: falta hoja.`
-    if (!d.count || d.count < 1) return `Detalle ${i + 1}: cantidad inválida.`
+    if (!d.cantidad || d.cantidad < 1) return `Detalle ${i + 1}: cantidad inválida.`
   }
   return ''
 }
+import { crearPedido } from '@/composables/Orders/crearOrder'
 
+const { mistake, crearPedidoAPI } = crearPedido()
 const submit = async () => {
   error.value = ''
   success.value = ''
@@ -96,25 +176,36 @@ const submit = async () => {
     details: form.details.map((d) => ({
       documentUuid: d.documentUuid,
       hojaUuid: d.hojaUuid,
+      printType: d.printType,
       productUuid: d.productUuid || undefined,
-      count: Number(d.count),
+      cantidad: Number(d.cantidad),
       description: d.description || undefined,
     })),
   }
 
   loading.submit = true
   try {
-    const { data } = await axios.post('/orders', payload)
-    success.value = `Pedido creado: ${data.uuid ?? '(ok)'}`
+
+    const created = await crearPedidoAPI('http://localhost:3000/orders', payload)
+
+
+    success.value = `Pedido creado: ${created.uuid ?? '(ok)'}`
+    alert(`Pedido creado: ${created.uuid ?? '(ok)'}`)
+    alert(mistake.value)
+
+
     // reset básico
     form.userUuid = ''
     form.notes = ''
     form.details = [
-      { documentUuid: '', hojaUuid: '', productUuid: '', count: 1, description: '' },
+      { documentUuid: '', hojaUuid: '', productUuid: '', count: 1, description: '', },
     ]
-  } catch (e) {
+
+    // opcional: redirigir a la vista del pedido creado o seguir cargando, preguntar al usuario, etc.
+
+  } catch (mistake) {
     // mensaje simple
-    error.value = e?.response?.data?.message ?? 'Error creando el pedido'
+    error.value = mistake.value ?? 'Error creando el pedido'
   } finally {
     loading.submit = false
   }
@@ -150,7 +241,7 @@ const submit = async () => {
       style="border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 12px;"
     >
       <div style="display:flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin:0;">Detalle {{ idx + 1 }}</h3>
+        <h3 style="margin:0;">DOCUMENTO Nº {{ idx + 1 }}</h3>
         <button type="button" @click="removeDetail(idx)" :disabled="form.details.length === 1">
           Quitar
         </button>
@@ -168,13 +259,23 @@ const submit = async () => {
         </div>
 
         <div>
+
           <label>Hoja</label><br />
-          <select v-model="d.hojaUuid" :disabled="loading.hojas" style="width: 100%;">
-            <option value="">-- seleccionar --</option>
-            <option v-for="h in hojas" :key="h.uuid" :value="h.uuid">
-              {{ h.name ?? h.tipo ?? h.uuid }}
-            </option>
+          <select v-model="d.hojaUuid" :disabled="loading.hojas" style="width: 100%;" @change="onHojaChange(d)">
+             <option value="">-- seleccionar --</option>
+              <option v-for="h in hojas" :key="h.uuid" :value="h.uuid">
+                {{ h.tamano }} - {{ h.gramaje }} grs
+              </option>
           </select>
+
+          <label style="display:block;margin-top:8px;">Impresión</label>
+          <select v-model="d.printType" :disabled="loading.hojas || !d.hojaUuid" style="width: 100%;" @change="onPrintChange(d)">
+            <option value="">-- seleccionar tipo impresión --</option>
+          <option v-for="opt in getPrintOptions(d)" :key="opt.key" :value="opt.key">
+          {{ opt.label }}
+          </option>
+          </select>
+
         </div>
 
         <div>
@@ -182,14 +283,14 @@ const submit = async () => {
           <select v-model="d.productUuid" :disabled="loading.products" style="width: 100%;">
             <option value="">-- ninguno --</option>
             <option v-for="p in enganches" :key="p.uuid" :value="p.uuid">
-              {{ p.name ?? p.nombre ?? p.uuid }}
+              {{ p.name ?? p.nombre ?? p.uuid }} - $ {{ p.price ?? p.precio }}
             </option>
           </select>
         </div>
 
         <div>
           <label>Cantidad</label><br />
-          <input type="number" min="1" v-model.number="d.count" style="width: 100%;" />
+          <input type="number" min="1" v-model.number="d.cantidad" style="width: 100%;" />
         </div>
 
         <div style="grid-column: 1 / -1;">
@@ -197,9 +298,20 @@ const submit = async () => {
           <input v-model="d.description" placeholder="Ej: doble faz, anillado, etc." style="width: 100%;" />
         </div>
       </div>
+
+      <h5>Páginas PDF: {{ getPagesDoc(d) }}</h5>
+      <h5>Precio hoja elegido: ${{ d.precioHoja }}</h5>
+      <h5>Precio enganche: ${{ getPrecioEnganche(d) }}</h5>
+      <h5>Cantidad (copias): {{ d.cantidad }}</h5>
+      <h5>Total impresiones: {{ getPages(d) * d.cantidad }} paginas en total</h5>
+      <h5>Subtotal: ${{ getSubtotal(d) }}</h5>
+      <h5>Total: ${{ getSubtotal(d) * d.cantidad }}</h5>
+
     </div>
 
     <button type="button" @click="addDetail">Agregar otro documento</button>
+
+
 
     <div style="margin-top: 16px;">
       <button type="button" @click="submit" :disabled="loading.submit">

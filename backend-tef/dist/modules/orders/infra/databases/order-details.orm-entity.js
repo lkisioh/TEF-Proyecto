@@ -22,13 +22,16 @@ let OrderDetailOrmEntity = class OrderDetailOrmEntity {
     order;
     documentUuid;
     document;
+    documentPageNumber;
     hojaUuid;
     hoja;
+    precioHoja;
     engancheUuid;
     enganche;
-    count;
+    precioEnganche;
+    cantidad;
     description;
-    unitPrice;
+    precioUnitario;
     subtotal;
 };
 exports.OrderDetailOrmEntity = OrderDetailOrmEntity;
@@ -62,6 +65,10 @@ __decorate([
     __metadata("design:type", Object)
 ], OrderDetailOrmEntity.prototype, "document", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
+    __metadata("design:type", Object)
+], OrderDetailOrmEntity.prototype, "documentPageNumber", void 0);
+__decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Object)
 ], OrderDetailOrmEntity.prototype, "hojaUuid", void 0);
@@ -73,6 +80,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'hojaUuid', referencedColumnName: 'uuid' }),
     __metadata("design:type", Object)
 ], OrderDetailOrmEntity.prototype, "hoja", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'real', default: 0 }),
+    __metadata("design:type", Number)
+], OrderDetailOrmEntity.prototype, "precioHoja", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Object)
@@ -86,19 +97,23 @@ __decorate([
     __metadata("design:type", Object)
 ], OrderDetailOrmEntity.prototype, "enganche", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'real', default: 0 }),
+    __metadata("design:type", Number)
+], OrderDetailOrmEntity.prototype, "precioEnganche", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], OrderDetailOrmEntity.prototype, "count", void 0);
+], OrderDetailOrmEntity.prototype, "cantidad", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: '' }),
     __metadata("design:type", String)
 ], OrderDetailOrmEntity.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'real', default: 0 }),
     __metadata("design:type", Number)
-], OrderDetailOrmEntity.prototype, "unitPrice", void 0);
+], OrderDetailOrmEntity.prototype, "precioUnitario", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'real', default: 0 }),
     __metadata("design:type", Number)
 ], OrderDetailOrmEntity.prototype, "subtotal", void 0);
 exports.OrderDetailOrmEntity = OrderDetailOrmEntity = __decorate([

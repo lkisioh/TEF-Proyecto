@@ -34,7 +34,7 @@ let OrderRepositoryImpl = class OrderRepositoryImpl {
                 estado: order.estado,
                 notes: order.notes ?? '',
                 total: order.total,
-                userUuid: order.userUuid ?? undefined,
+                userUuid: order.userUuid ?? null,
             };
             const orderOrm = manager.create(order_orm_entity_1.OrderOrmEntity, orderData);
             const savedOrder = await manager.save(order_orm_entity_1.OrderOrmEntity, orderOrm);
@@ -45,9 +45,12 @@ let OrderRepositoryImpl = class OrderRepositoryImpl {
                     documentUuid: d.documentUuid,
                     hojaUuid: d.hojaUuid,
                     engancheUuid: d.engancheUuid,
-                    count: d.count,
+                    documentPageNumber: d.documentPageNumber,
+                    cantidad: d.cantidad,
                     description: d.description ?? '',
-                    unitPrice: d.unitPrice,
+                    precioUnitario: d.precioUnitario,
+                    precioHoja: d.precioHoja,
+                    precioEnganche: d.precioEnganche,
                     subtotal: d.subtotal,
                 };
                 return manager.create(order_details_orm_entity_1.OrderDetailOrmEntity, detailData);
@@ -86,12 +89,15 @@ let OrderRepositoryImpl = class OrderRepositoryImpl {
         o.details = detailsOrm.map((d) => {
             const dd = new order_detail_entity_1.OrderDetailEntity();
             dd.uuid = d.uuid;
-            dd.documentUuid = d.document?.uuid;
-            dd.hojaUuid = d.hoja?.uuid;
-            dd.engancheUuid = d.enganche?.uuid;
-            dd.count = d.count;
+            dd.documentUuid = d.documentUuid ?? null;
+            dd.hojaUuid = d.hojaUuid ?? null;
+            dd.engancheUuid = d.engancheUuid ?? null;
+            dd.documentPageNumber = d.documentPageNumber ?? null;
+            dd.precioHoja = d.precioHoja;
+            dd.precioEnganche = d.precioEnganche;
+            dd.cantidad = d.cantidad;
             dd.description = d.description;
-            dd.unitPrice = d.unitPrice;
+            dd.precioUnitario = d.precioUnitario;
             dd.subtotal = d.subtotal;
             return dd;
         });

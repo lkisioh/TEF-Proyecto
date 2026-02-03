@@ -6,6 +6,7 @@ class DocumentEntity {
     uuid;
     fileName;
     contentType;
+    cantidadPaginas;
     data;
     createdAt;
     orders;

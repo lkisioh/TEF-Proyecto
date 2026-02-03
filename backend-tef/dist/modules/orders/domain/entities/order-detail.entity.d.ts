@@ -2,11 +2,14 @@ export declare class OrderDetailEntity {
     readonly id: number;
     uuid: string;
     orderUuid: string;
-    documentUuid: string | undefined;
-    hojaUuid: string | undefined;
-    engancheUuid: string | undefined;
-    count: number;
+    documentUuid: string | null;
+    documentPageNumber: number | null;
+    hojaUuid: string | null;
+    precioHoja: number;
+    engancheUuid: string | null;
+    precioEnganche: number;
+    cantidad: number;
     description: string;
-    unitPrice: number;
+    precioUnitario: number;
     subtotal: number;
 }

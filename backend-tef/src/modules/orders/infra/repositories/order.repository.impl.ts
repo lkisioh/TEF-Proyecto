@@ -25,7 +25,7 @@ export class OrderRepositoryImpl implements IOrderRepository {
         estado: order.estado,
         notes: order.notes ?? '',
         total: order.total,
-        userUuid: order.userUuid ?? undefined, // ✅ FK directa
+        userUuid: order.userUuid ?? null, // ✅ FK directa
       };
 
       const orderOrm = manager.create(OrderOrmEntity, orderData);
@@ -41,9 +41,12 @@ export class OrderRepositoryImpl implements IOrderRepository {
           hojaUuid: d.hojaUuid,
           engancheUuid: d.engancheUuid,
 
-          count: d.count,
+          documentPageNumber: d.documentPageNumber,
+          cantidad: d.cantidad,
           description: d.description ?? '',
-          unitPrice: d.unitPrice,
+          precioUnitario: d.precioUnitario,
+          precioHoja: d.precioHoja,
+          precioEnganche: d.precioEnganche,
           subtotal: d.subtotal,
         };
 
@@ -93,12 +96,19 @@ export class OrderRepositoryImpl implements IOrderRepository {
     o.details = detailsOrm.map((d) => {
       const dd = new OrderDetailEntity();
       dd.uuid = d.uuid;
-      dd.documentUuid = d.document?.uuid;
-      dd.hojaUuid = d.hoja?.uuid;
-      dd.engancheUuid = d.enganche?.uuid;
-      dd.count = d.count;
+
+      // ✅ USAR FKs (siempre existen aunque no estén las relaciones cargadas)
+      dd.documentUuid = d.documentUuid ?? null;
+      dd.hojaUuid = d.hojaUuid ?? null;
+      dd.engancheUuid = d.engancheUuid ?? null;
+
+      dd.documentPageNumber = d.documentPageNumber ?? null;
+      dd.precioHoja = d.precioHoja;
+      dd.precioEnganche = d.precioEnganche;
+
+      dd.cantidad = d.cantidad;
       dd.description = d.description;
-      dd.unitPrice = d.unitPrice;
+      dd.precioUnitario = d.precioUnitario;
       dd.subtotal = d.subtotal;
       return dd;
     });

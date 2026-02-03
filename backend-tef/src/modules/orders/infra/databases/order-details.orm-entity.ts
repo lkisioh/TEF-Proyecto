@@ -35,6 +35,9 @@ export class OrderDetailOrmEntity {
   @JoinColumn({ name: 'documentUuid', referencedColumnName: 'uuid' })
   document: DocumentOrmEntity | null;
 
+  @Column({ type: 'int', nullable: true })
+  documentPageNumber: number | null;
+
   @Column({ nullable: true })
   hojaUuid: string | null;
 
@@ -44,6 +47,9 @@ export class OrderDetailOrmEntity {
   })
   @JoinColumn({ name: 'hojaUuid', referencedColumnName: 'uuid' })
   hoja: HojaOrmEntity | null;
+
+  @Column({ type: 'real', default: 0 })
+  precioHoja: number;
 
   @Column({ nullable: true })
   engancheUuid: string | null;
@@ -55,15 +61,18 @@ export class OrderDetailOrmEntity {
   @JoinColumn({ name: 'engancheUuid', referencedColumnName: 'uuid' })
   enganche: ProductOrmEntity | null;
 
+  @Column({ type: 'real', default: 0 })
+  precioEnganche: number;
+
   @Column()
-  count: number;
+  cantidad: number;
 
   @Column({ default: '' })
   description: string;
 
-  @Column()
-  unitPrice: number;
+  @Column({ type: 'real', default: 0 })
+  precioUnitario: number;
 
-  @Column()
+  @Column({ type: 'real', default: 0 })
   subtotal: number;
 }

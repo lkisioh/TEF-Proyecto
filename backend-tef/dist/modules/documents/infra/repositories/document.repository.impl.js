@@ -29,6 +29,7 @@ let DocumentRepositoryImpl = class DocumentRepositoryImpl {
             uuid: (0, uuid_1.v4)(),
             fileName: dto.fileName,
             contentType: dto.contentType,
+            cantidadPaginas: dto.cantidadPaginas,
             data: dto.data,
         });
         const saved = await this.documentRepo.save(document);
@@ -38,6 +39,7 @@ let DocumentRepositoryImpl = class DocumentRepositoryImpl {
             uuid: saved.uuid,
             fileName: saved.fileName,
             contentType: saved.contentType,
+            cantidadPaginas: saved.cantidadPaginas,
             data: saved.data,
             createdAt: saved.createdAt,
         });
@@ -51,6 +53,7 @@ let DocumentRepositoryImpl = class DocumentRepositoryImpl {
                 uuid: entity.uuid,
                 fileName: entity.fileName,
                 contentType: entity.contentType,
+                cantidadPaginas: entity.cantidadPaginas,
                 data: entity.data,
                 createdAt: entity.createdAt,
             });
@@ -66,6 +69,7 @@ let DocumentRepositoryImpl = class DocumentRepositoryImpl {
             uuid: entity.uuid,
             fileName: entity.fileName,
             contentType: entity.contentType,
+            cantidadPaginas: entity.cantidadPaginas,
             data: entity.data,
             createdAt: entity.createdAt,
         });

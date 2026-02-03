@@ -52,7 +52,7 @@ const onUploadClick = async () => {
     <select id="docSelect" v-model="selectedDocUuid">
       <option value="" disabled>-- Seleccione un documento --</option>
       <option v-for="doc in docs" :key="doc.uuid" :value="doc.uuid || doc.uuidid">
-        {{ doc.fileName }} - ({{ new Date(doc.createdAt).toLocaleDateString() }})
+        {{ doc.fileName }} - ({{ new Date(doc.createdAt).toLocaleDateString() }}) - {{ doc.cantidadPaginas }} páginas
       </option>
     </select>
 

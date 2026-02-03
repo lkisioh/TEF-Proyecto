@@ -6,11 +6,14 @@ class OrderDetailEntity {
     uuid;
     orderUuid;
     documentUuid;
+    documentPageNumber;
     hojaUuid;
+    precioHoja;
     engancheUuid;
-    count;
+    precioEnganche;
+    cantidad;
     description;
-    unitPrice;
+    precioUnitario;
     subtotal;
 }
 exports.OrderDetailEntity = OrderDetailEntity;

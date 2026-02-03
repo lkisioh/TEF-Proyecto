@@ -9,12 +9,15 @@ export declare class OrderDetailOrmEntity {
     order: OrderOrmEntity;
     documentUuid: string | null;
     document: DocumentOrmEntity | null;
+    documentPageNumber: number | null;
     hojaUuid: string | null;
     hoja: HojaOrmEntity | null;
+    precioHoja: number;
     engancheUuid: string | null;
     enganche: ProductOrmEntity | null;
-    count: number;
+    precioEnganche: number;
+    cantidad: number;
     description: string;
-    unitPrice: number;
+    precioUnitario: number;
     subtotal: number;
 }

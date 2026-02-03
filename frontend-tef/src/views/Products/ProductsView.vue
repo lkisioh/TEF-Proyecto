@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
   </nav>
 
   <nav>
-    <RouterLink to="/productos/enganche">ENGANCHES</RouterLink>
+    <RouterLink to="/productos/enganches">ENGANCHES</RouterLink>
   </nav>
 
 </template>

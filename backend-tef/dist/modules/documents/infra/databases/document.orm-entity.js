@@ -17,6 +17,7 @@ let DocumentOrmEntity = class DocumentOrmEntity {
     uuid;
     fileName;
     contentType;
+    cantidadPaginas;
     data;
     createdAt;
     orderDetails;
@@ -38,6 +39,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'text', default: 'application/pdf' }),
     __metadata("design:type", String)
 ], DocumentOrmEntity.prototype, "contentType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'integer' }),
+    __metadata("design:type", Number)
+], DocumentOrmEntity.prototype, "cantidadPaginas", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'blob' }),
     __metadata("design:type", Buffer)

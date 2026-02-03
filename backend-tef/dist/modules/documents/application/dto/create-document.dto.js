@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 class CreateDocumentDto {
     fileName;
     contentType;
+    cantidadPaginas;
     data;
 }
 exports.CreateDocumentDto = CreateDocumentDto;
@@ -25,4 +26,8 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "contentType", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CreateDocumentDto.prototype, "cantidadPaginas", void 0);
 //# sourceMappingURL=create-document.dto.js.map

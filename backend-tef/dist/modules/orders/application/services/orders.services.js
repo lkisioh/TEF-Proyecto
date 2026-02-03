@@ -22,17 +22,41 @@ const order_tokens_1 = require("../../../tokkens/order.tokens");
 const user_tokens_1 = require("../../../tokkens/user.tokens");
 const document_tokkens_1 = require("../../../tokkens/document.tokkens");
 const product_tokens_1 = require("../../../tokkens/product.tokens");
+const hoja_tokkens_1 = require("../../../tokkens/hoja.tokkens");
 const order_detail_entity_1 = require("../../domain/entities/order-detail.entity");
+function pagesToPrint(pageCount, printType) {
+    const pages = Number(pageCount ?? 0);
+    if (pages <= 0)
+        return 0;
+    const isDoble = printType === 'byn_doble' || printType === 'col_doble';
+    return isDoble ? Math.ceil(pages / 2) : pages;
+}
+function hojaUnitPrice(hoja, printType) {
+    switch (printType) {
+        case 'byn_simple':
+            return Number(hoja.precioBynSimple ?? 0);
+        case 'byn_doble':
+            return Number(hoja.precioBynDobleFaz ?? 0);
+        case 'col_simple':
+            return Number(hoja.precioColorSimple ?? 0);
+        case 'col_doble':
+            return Number(hoja.precioColorDobleFaz ?? 0);
+        default:
+            return 0;
+    }
+}
 let OrdersService = class OrdersService {
     orderRepository;
     productRepository;
     userRepository;
     documentRepository;
-    constructor(orderRepository, productRepository, userRepository, documentRepository) {
+    hojasRepository;
+    constructor(orderRepository, productRepository, userRepository, documentRepository, hojasRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.documentRepository = documentRepository;
+        this.hojasRepository = hojasRepository;
     }
     async findAll() {
         return await this.orderRepository.findAll();
@@ -51,7 +75,7 @@ let OrdersService = class OrdersService {
         }
         const order = new order_entity_1.OrderEntity();
         order.uuid = (0, uuid_1.v4)();
-        order.userUuid = dto.userUuid ?? 'Consumidor Final';
+        order.userUuid = dto.userUuid ?? null;
         order.estado = 'PENDIENTE';
         order.notes = dto.notes ?? '';
         order.details = [];
@@ -61,29 +85,41 @@ let OrdersService = class OrdersService {
             const doc = await this.documentRepository.findByUuid(d.documentUuid);
             if (!doc)
                 throw new common_2.NotFoundException(`Documento no existe: ${d.documentUuid}`);
-            const hoja = await this.productRepository.findByUuid(d.hojaUuid);
+            const pageCount = doc.cantidadPaginas ?? 0;
+            if (pageCount <= 0)
+                throw new common_3.BadRequestException('El documento no tiene páginas válidas');
+            const hoja = await this.hojasRepository.findByUuid(d.hojaUuid);
             if (!hoja)
                 throw new common_2.NotFoundException(`Hoja no existe: ${d.hojaUuid}`);
-            const enganche = d.productUuid
-                ? await this.productRepository.findByUuid(d.productUuid)
-                : null;
-            if (d.productUuid && !enganche) {
-                throw new common_2.NotFoundException(`Enganche no existe: ${d.productUuid}`);
+            let enganchePrice = 0;
+            let engancheUuid = undefined;
+            if (d.productUuid) {
+                const enganche = await this.productRepository.findByUuid(d.productUuid);
+                if (!enganche)
+                    throw new common_2.NotFoundException(`Enganche no existe: ${d.productUuid}`);
+                engancheUuid = enganche.uuid;
+                enganchePrice = enganche.price;
             }
-            const hojaPrice = Number(hoja.price ?? 0);
-            const enganchePrice = Number(enganche?.price ?? 0);
+            const printType = d.printType ?? 'byn_simple';
+            const pagesPrinted = pagesToPrint(pageCount, printType);
+            const hojaPrice = hojaUnitPrice(hoja, printType);
             if (hojaPrice < 0 || enganchePrice < 0)
                 throw new common_3.BadRequestException('Precios inválidos');
-            const unitPrice = hojaPrice + enganchePrice;
-            const subtotal = unitPrice * d.count;
+            if (!d.cantidad || d.cantidad < 1)
+                throw new common_3.BadRequestException('Cantidad inválida');
+            const unitPrice = pagesPrinted * hojaPrice;
+            const subtotal = unitPrice * Number(d.cantidad) + enganchePrice;
             const detail = new order_detail_entity_1.OrderDetailEntity();
             detail.uuid = (0, uuid_1.v4)();
             detail.documentUuid = d.documentUuid;
             detail.hojaUuid = d.hojaUuid;
-            detail.engancheUuid = d.productUuid;
-            detail.count = d.count;
+            detail.engancheUuid = engancheUuid ?? null;
+            detail.documentPageNumber = pagesPrinted;
+            detail.cantidad = Number(d.cantidad);
             detail.description = d.description ?? '';
-            detail.unitPrice = unitPrice;
+            detail.precioHoja = hojaPrice;
+            detail.precioEnganche = enganchePrice;
+            detail.precioUnitario = unitPrice;
             detail.subtotal = subtotal;
             order.details.push(detail);
             total += subtotal;
@@ -102,6 +138,7 @@ exports.OrdersService = OrdersService = __decorate([
     __param(1, (0, common_1.Inject)(product_tokens_1.PRODUCT_REPOSITORY)),
     __param(2, (0, common_1.Inject)(user_tokens_1.USER_REPOSITORY)),
     __param(3, (0, common_1.Inject)(document_tokkens_1.DOCUMENT_REPOSITORY)),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
+    __param(4, (0, common_1.Inject)(hoja_tokkens_1.HOJA_REPOSITORY)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], OrdersService);
 //# sourceMappingURL=orders.services.js.map
