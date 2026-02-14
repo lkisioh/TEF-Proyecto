@@ -36,6 +36,7 @@ let HojasService = class HojasService {
         const hoja = new hoja_entity_1.HojaEntity();
         hoja.uuid = (0, uuid_1.v4)();
         hoja.tamano = dto.tamano;
+        hoja.tipo = dto.tipo;
         hoja.gramaje = dto.gramaje;
         hoja.precioBynSimple = dto.precioBynSimple;
         hoja.precioBynDobleFaz = dto.precioBynDobleFaz;

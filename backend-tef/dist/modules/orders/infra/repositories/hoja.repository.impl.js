@@ -29,6 +29,7 @@ let HojasRepositoryImpl = class HojasRepositoryImpl {
         const orm = this.hojaRepo.create({
             uuid: hoja.uuid,
             tamano: hoja.tamano,
+            tipo: hoja.tipo,
             gramaje: hoja.gramaje,
             precioBynSimple: hoja.precioBynSimple,
             precioBynDobleFaz: hoja.precioBynDobleFaz,
@@ -48,6 +49,7 @@ let HojasRepositoryImpl = class HojasRepositoryImpl {
             Object.assign(hojas, {
                 uuid: entity.uuid,
                 tamano: entity.tamano,
+                tipo: entity.tipo,
                 gramaje: entity.gramaje,
                 precioBynSimple: entity.precioBynSimple,
                 precioBynDobleFaz: entity.precioBynDobleFaz,

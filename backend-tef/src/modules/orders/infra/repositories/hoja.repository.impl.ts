@@ -22,6 +22,7 @@ export class HojasRepositoryImpl implements IHojaRepository {
     const orm = this.hojaRepo.create({
       uuid: hoja.uuid,
       tamano: hoja.tamano,
+      tipo: hoja.tipo,
       gramaje: hoja.gramaje,
       precioBynSimple: hoja.precioBynSimple,
       precioBynDobleFaz: hoja.precioBynDobleFaz,
@@ -44,6 +45,7 @@ export class HojasRepositoryImpl implements IHojaRepository {
       Object.assign(hojas, {
         uuid: entity.uuid,
         tamano: entity.tamano,
+        tipo: entity.tipo,
         gramaje: entity.gramaje,
         precioBynSimple: entity.precioBynSimple,
         precioBynDobleFaz: entity.precioBynDobleFaz,

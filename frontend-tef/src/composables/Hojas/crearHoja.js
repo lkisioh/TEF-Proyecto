@@ -10,6 +10,7 @@ export const crearHojas= ()=> {
   const crearHojaAPI= async(url, newHoja)=>{
   try{
     cargando.value=true
+    console.log('payload', JSON.stringify(newHoja, null, 2))
     const res = await axios.post(url, newHoja)
 
     createdHoja.value= res.data

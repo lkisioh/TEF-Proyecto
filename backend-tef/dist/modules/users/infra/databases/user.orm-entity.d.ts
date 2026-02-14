@@ -5,6 +5,7 @@ export declare class UserOrmEntity {
     name: string;
     surname: string;
     email: string;
+    address: string;
     password: string;
     orders: OrderOrmEntity[];
     phone: string;

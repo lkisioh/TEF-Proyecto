@@ -35,6 +35,7 @@ let UserRepositoryImpl = class UserRepositoryImpl {
             uuid: (0, uuid_1.v4)(),
             name: dto.name,
             surname: dto.surname,
+            address: dto.address,
             email: dto.email,
             password: dto.password,
             phone: dto.phone,

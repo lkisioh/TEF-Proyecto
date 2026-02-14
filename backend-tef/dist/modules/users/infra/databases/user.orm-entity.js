@@ -18,6 +18,7 @@ let UserOrmEntity = class UserOrmEntity {
     name;
     surname;
     email;
+    address;
     password;
     orders;
     phone;
@@ -44,6 +45,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserOrmEntity.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], UserOrmEntity.prototype, "address", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

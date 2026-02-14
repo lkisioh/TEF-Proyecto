@@ -12,6 +12,9 @@ export class HojaOrmEntity {
   @Column({ default: null })
   tamano: string;
 
+  @Column({ default: null })
+  tipo: string;
+
   @Column({ nullable: true })
   gramaje: number;
 
@@ -27,7 +30,7 @@ export class HojaOrmEntity {
   @Column()
   precioColorDobleFaz: number;
 
-  @Column({nullable : true})
+  @Column({ nullable: true })
   description: string;
 
   @OneToMany(() => OrderDetailOrmEntity, (h) => h.hoja)

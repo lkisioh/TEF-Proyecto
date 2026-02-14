@@ -15,6 +15,7 @@ class CreateHojaDto {
     uuid;
     tamano;
     gramaje;
+    tipo;
     precioBynSimple;
     precioBynDobleFaz;
     precioColorSimple;
@@ -36,6 +37,10 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], CreateHojaDto.prototype, "gramaje", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateHojaDto.prototype, "tipo", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),

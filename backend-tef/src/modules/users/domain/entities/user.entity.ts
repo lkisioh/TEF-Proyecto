@@ -4,6 +4,7 @@ export class UserEntity {
   public name: string;
   public surname: string;
   public email: string;
+  public address: string;
   public password: string;
   public phone: string;
   public role: string = 'user';

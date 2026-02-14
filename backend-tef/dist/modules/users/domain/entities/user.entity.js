@@ -7,6 +7,7 @@ class UserEntity {
     name;
     surname;
     email;
+    address;
     password;
     phone;
     role = 'user';

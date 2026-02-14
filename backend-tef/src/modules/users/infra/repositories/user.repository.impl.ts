@@ -32,6 +32,7 @@ export class UserRepositoryImpl implements IUserRepository {
       uuid: uuidv4(),
       name: dto.name,
       surname: dto.surname,
+      address: dto.address,
       email: dto.email,
       password: dto.password,
       phone: dto.phone,

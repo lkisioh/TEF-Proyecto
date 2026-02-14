@@ -30,6 +30,7 @@ export class HojasService {
     const hoja = new HojaEntity();
     hoja.uuid = uuidv4();
     hoja.tamano = dto.tamano;
+    hoja.tipo = dto.tipo;
     hoja.gramaje = dto.gramaje;
     hoja.precioBynSimple = dto.precioBynSimple;
     hoja.precioBynDobleFaz = dto.precioBynDobleFaz;

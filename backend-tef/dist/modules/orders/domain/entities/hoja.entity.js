@@ -5,6 +5,7 @@ class HojaEntity {
     id;
     uuid;
     tamano;
+    tipo;
     gramaje;
     precioBynSimple;
     precioBynDobleFaz;

@@ -16,6 +16,7 @@ let HojaOrmEntity = class HojaOrmEntity {
     id;
     uuid;
     tamano;
+    tipo;
     gramaje;
     precioBynSimple;
     precioBynDobleFaz;
@@ -37,6 +38,10 @@ __decorate([
     (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], HojaOrmEntity.prototype, "tamano", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: null }),
+    __metadata("design:type", String)
+], HojaOrmEntity.prototype, "tipo", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)

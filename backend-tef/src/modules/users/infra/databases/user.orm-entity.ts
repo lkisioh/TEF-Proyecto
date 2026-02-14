@@ -17,6 +17,9 @@ export class UserOrmEntity {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  address: string;
+
   @Column()
   password: string;
 

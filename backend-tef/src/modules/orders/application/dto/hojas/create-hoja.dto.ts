@@ -12,6 +12,9 @@ export class CreateHojaDto {
   @Min(1)
   gramaje: number;
 
+  @IsString()
+  tipo: string;
+
   @IsNumber()
   @Min(0)
   precioBynSimple: number;

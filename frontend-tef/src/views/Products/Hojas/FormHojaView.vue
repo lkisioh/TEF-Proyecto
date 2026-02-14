@@ -12,6 +12,7 @@ let err = ref('')
 
 const form = reactive({
   tamano: 'A4',
+  tipo: '',
   gramaje: 80,
   precioBynSimple: 0,
   precioBynDobleFaz: 0,
@@ -37,6 +38,7 @@ const submit = async () => {
   try {
     const nuevaHoja = {
       tamano: form.tamano?.trim() || null,
+      tipo: form.tipo?.trim() || null,
       gramaje: Number(form.gramaje),
       precioBynSimple: Number(form.precioBynSimple),
       precioBynDobleFaz: Number(form.precioBynDobleFaz),
@@ -45,20 +47,28 @@ const submit = async () => {
       description: form.description?.trim() || null,
     }
 
-    const { data } = await crearHojaAPI('http://localhost:3000/hojas',nuevaHoja)
-    success.value = `Hoja creada: ${data.uuid ?? 'OK'}`
-    alert(`Hoja creada con éxito: ${data.uuid ?? 'OK'}`)
+    //const data = await crearHojaAPI('http://localhost:3000/hojas',nuevaHoja)
+    //success.value = `Hoja creada: ${data.uuid ?? 'OK'}`
+    //alert(`Hoja creada con éxito: ${data.uuid ?? 'OK'}`)
+
+    const res = await crearHojaAPI('http://localhost:3000/hojas', nuevaHoja)
+    const data = res?.data ?? res
+
+    success.value = `Hoja creada: ${data?.uuid ?? 'OK'}`
+    alert(`Hoja creada con éxito: ${data?.uuid ?? 'OK'}`)
+
 
     // reset
     form.tamano = 'A4'
+    form.tipo = ''
     form.gramaje = 80
     form.precioBynSimple = 0
     form.precioBynDobleFaz = 0
     form.precioColorSimple = 0
     form.precioColorDobleFaz = 0
-    form.description = ''
+    form.description = ' '
   } catch (e) {
-    error.value = e?.response?.data?.message ?? 'Error creando hoja'
+    err.value = e?.response?.data?.message
   } finally {
     loading.value = false
   }
@@ -70,15 +80,31 @@ const submit = async () => {
     <h1>Crear Hoja</h1>
 
     <div>
+      <label>Tamaño</label><br />
       <select v-model="form.tamano" >
         <option value="">-- Seleccionar Hoja--</option>
-        <option value="A1">A1</option>
-        <option value="A2">A2</option>
         <option value="A3">A3</option>
         <option value="A4">A4</option>
-        <option value="A5">A5</option>
+        <option value="Oficio">Oficio</option>
       </select>
     </div>
+
+    <div>
+      <label>Tipo de hoja</label><br />
+      <select v-model="form.tipo" >
+        <option value="">-- Seleccionar Tipo de Hoja--</option>
+        <option value="Ilustracion">Ilustración</option>
+        <option value="Papel Obra">Papel Obra</option>
+        <option value="Papel Ilustracion Adhesivo">Papel Ilustración Adhesivo</option>
+        <option value="Adhesivo OPP">Adhesivo OPP</option>
+        <option value="Papel Fotografico">Papel Fotográfico</option>
+        <option value="Papel Fotografico Adhesivo">Papel Fotográfico Adhesivo</option>
+        <option value="Outlet">Outlet</option>
+      </select>
+    </div>
+
+
+
 
     <div>
       <label>Gramaje</label><br />
@@ -118,7 +144,7 @@ const submit = async () => {
       </button>
     </div>
 
-    <p v-if="error" style="color:crimson;margin-top:12px;">{{ error }}</p>
+    <p v-if="err" style="color:crimson;margin-top:12px;">{{ err }}</p>
     <p v-if="success" style="color:green;margin-top:12px;">{{ success }}</p>
   </div>
 </template>

@@ -191,7 +191,6 @@ const submit = async () => {
 
     success.value = `Pedido creado: ${created.uuid ?? '(ok)'}`
     alert(`Pedido creado: ${created.uuid ?? '(ok)'}`)
-    alert(mistake.value)
 
 
     // reset básico
@@ -264,7 +263,7 @@ const submit = async () => {
           <select v-model="d.hojaUuid" :disabled="loading.hojas" style="width: 100%;" @change="onHojaChange(d)">
              <option value="">-- seleccionar --</option>
               <option v-for="h in hojas" :key="h.uuid" :value="h.uuid">
-                {{ h.tamano }} - {{ h.gramaje }} grs
+                {{ h.tamano }} - {{ h.gramaje }} grs - {{ h.tipo }}
               </option>
           </select>
 

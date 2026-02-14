@@ -5,6 +5,7 @@ import { traerDocuments} from '@/composables/Documents/traerDocuments'
 
 import { RouterLink } from 'vue-router'
 import { computed } from 'vue'
+import { onMounted } from 'vue'
 
 const {orders,llamarOrdenesAPI} = traerOrders()
 const {users,llamarUsuariosAPI} = traerUsers()
@@ -14,9 +15,24 @@ llamarOrdenesAPI('http://localhost:3000/orders/')
 llamarUsuariosAPI('http://localhost:3000/users/')
 llamarDocsAPI('http://localhost:3000/documents/')
 
+import { traerHojas } from '@/composables/Products/Hojas/traerHojas'
+const {hojas, llamarHojasAPI } = traerHojas()
+
+import { traerProducts } from '@/composables/Products/traerProducts'
+const{ products, llamarProductosAPI } = traerProducts()
+
+const enganches = computed(() => products.value.filter(p => p.category === 'Enganche'))
 
 const findUser = (uuid) => users.value.find(u => u.uuid === uuid)
 const findDoc = (uuid) => docs.value.find(d => d.uuid === uuid)
+
+const findHoja = (uuid) => hojas.value.find(x => x.uuid === uuid)
+const findEnganche = (uuid) => enganches.value.find(x => x.uuid === uuid)
+
+onMounted(() => {
+
+    llamarProductosAPI('http://localhost:3000/products'),
+    llamarHojasAPI('http://localhost:3000/hojas')})
 
 const ordersView = computed(() => {
   return orders.value.map((o) => {
@@ -61,45 +77,156 @@ const abrirArchivo = (docUuid) => {
   window.open(`http://localhost:3000/documents/${docUuid}`, '_blank')
 }
 
+const eliminarPedido = async (uuid) => {
+  const ok = confirm('¿Seguro que querés eliminar este pedido?')
+  if (!ok) return
+
+  try {
+    await fetch(`http://localhost:3000/orders/${uuid}`, {
+      method: 'DELETE'
+    })
+
+    ordersView.value = ordersView.value.filter(o => o.uuid !== uuid)
+  } catch (e) {
+    console.log(e)
+    alert('No se pudo eliminar el pedido')
+  }
+}
+
 
 </script>
 <template>
-  <h1>Pedidos</h1>
+  <div style="max-width:1200px;margin:0 auto;padding:16px;">
+    <h1>Pedidos</h1>
 
-  <div class="contenedor">
+    <nav style="margin:12px 0;">
+      <RouterLink to="/pedidos/nuevo">Nuevo Pedido</RouterLink>
+    </nav>
 
-    <nav>
-    <RouterLink to="/pedidos/nuevo">Nuevo Pedido</RouterLink>
-  </nav>
-    Aquí va la lista de pedidos
+    <div style="overflow:auto;border:1px solid #ddd;border-radius:10px;">
+      <table style="width:100%;border-collapse:collapse;min-width:1100px;">
+        <thead>
+          <tr style="background:#f6f6f6;">
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:left;">UUID</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:left;">Cliente</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:left;">Archivos</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:left;">Detalle</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:left;">Fecha</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:left;">Estado</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:right;">Subtotal</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:right;">Total</th>
+            <th style="padding:10px;border-bottom:1px solid #ddd;text-align:center;">Acciones</th>
+          </tr>
+        </thead>
 
-    <div class="pedido" v-for="order in ordersView" :key="order.uuid">
-  <p><strong>UUID:</strong> {{ order.uuid }}</p>
+        <tbody>
+          <tr v-for="order in ordersView" :key="order.uuid">
+            <!-- UUID -->
+            <td style="padding:10px;border-bottom:1px solid #eee;font-family:monospace;">
+              {{ order.uuid }}
+            </td>
 
-  <p><strong>Cliente:</strong>  {{ order.clienteNombre }} {{ order.clienteApellido }}</p>
+            <!-- Cliente -->
+            <td style="padding:10px;border-bottom:1px solid #eee;">
+              {{ order.clienteNombre }} {{ order.clienteApellido }}
+            </td>
 
-  <p><strong>Archivo:</strong> {{ order.archivo }}
-    <ul v-if="order.details?.length">
-      <li v-for="d in order.details" :key="d.uuid">
-        {{ findDoc(d.documentUuid)?.fileName ?? d.documentUuid }}
-      <button type="button" @click="abrirArchivo(d.documentUuid)">Ver</button> — Copias: {{ d.cantidad }} — Subtotal: ${{ d.subtotal }}
-      
-      </li>
-    </ul>
-  </p>
+            <!-- Archivos / detalles -->
+            <td style="padding:10px;border-bottom:1px solid #eee;">
+              <div v-if="order.details?.length">
+                <div
+                  v-for="d in order.details"
+                  :key="d.uuid"
+                  style="margin-bottom:4px;font-size:13px;"
+                >
 
-  <p><strong>Fecha:</strong> {{ order.fecha }}</p>
-  <p><strong>Estado:</strong> {{ order.estado }}</p>
-  <p><strong>Notas:</strong> {{ order.notes }}</p>
+                  {{ findDoc(d.documentUuid)?.fileName ?? d.documentUuid }}
+                  —
+                  Copias: {{ d.cantidad }}
+                  —
+                  ${{ d.subtotal }}
 
-  <p><strong>Cantidad:</strong> {{ order.cantidad }}</p>
-  <p><strong>Subtotal:</strong> {{ order.subtotal }}</p>
-  <p><strong>Total:</strong> ${{ order.total }}</p>
-</div>
+                  <button
+                    type="button"
+                    @click="abrirArchivo(d.documentUuid)"
+                    style="margin-left:6px;padding:2px 6px;font-size:12px;"
+                  >
+                    Ver
+                  </button>
+                </div>
+              </div>
+              <span v-else>-</span>
+            </td>
+
+            <td>
+              <!-- detalle -->
+               <div v-if="order.details?.length">
+                <div
+                  v-for="d in order.details"
+                  :key="d.uuid"
+                  style="margin-bottom:4px;font-size:13px;"
+                >
+
+                   hoja: {{ findHoja(d.hojaUuid)?.tamano}}, {{ findHoja(d.hojaUuid)?.gramaje }} grs, {{ findHoja(d.hojaUuid)?.tipo }}
+                  -
+                  enganche: {{ findEnganche(d.productUuid)?.name ?? '(sin enganche)' }}
+                  
+                </div>
+              </div>
+              <span v-else>-</span>
 
 
+            </td>
+            <!-- Fecha -->
+            <td style="padding:10px;border-bottom:1px solid #eee;">
+              {{ order.fecha }}
+            </td>
+
+            <!-- Estado -->
+            <td style="padding:10px;border-bottom:1px solid #eee;">
+              {{ order.estado }}
+            </td>
+
+            <!-- Subtotal -->
+            <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;">
+              $ {{ order.subtotal }}
+            </td>
+
+            <!-- Total -->
+            <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;">
+              $ {{ order.total }}
+            </td>
+
+            <!-- Acciones -->
+            <td style="padding:10px;border-bottom:1px solid #eee;text-align:center;white-space:nowrap;">
+              <RouterLink
+                :to="`/pedidos/editar/${order.uuid}`"
+                style="display:inline-block;padding:6px 10px;border:1px solid #999;border-radius:8px;margin-right:6px;text-decoration:none;"
+              >
+                Editar
+              </RouterLink>
+
+              <button
+                type="button"
+                @click="eliminarPedido(order.uuid)"
+                style="padding:6px 10px;border:1px solid #c33;background:transparent;border-radius:8px;cursor:pointer;"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+
+          <tr v-if="!ordersView || ordersView.length === 0">
+            <td colspan="8" style="padding:14px;text-align:center;">
+              No hay pedidos cargados.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
+
 >
 <style scoped>
 .contenedor {
